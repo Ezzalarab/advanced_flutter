@@ -2,9 +2,9 @@ import 'package:advanced_flutter/presentation/forgot_password/forgot_password_vi
 import 'package:advanced_flutter/presentation/login/login_view.dart';
 import 'package:advanced_flutter/presentation/main/main_view.dart';
 import 'package:advanced_flutter/presentation/register/register_view.dart';
+import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:advanced_flutter/presentation/splash/splash_view.dart';
 import 'package:advanced_flutter/presentation/store_details/store_details_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -38,14 +38,14 @@ class RouteGenerator {
 
   static Route<dynamic> unHandeledRoute() {
     return MaterialPageRoute(
-        builder: (_) => Scaffold(
-              appBar: AppBar(
-                title: const Text(
-                    "No Route Found"), // TODO move string to stringes manager
-              ),
-              body: const Center(
-                  child: Text(
-                      "No Route Found")), // TODO move string to stringes manager
-            ));
+      builder: (_) => Scaffold(
+        appBar: AppBar(
+          title: const Text(AppSrtings.noRouteFound),
+        ),
+        body: const Center(
+          child: Text(AppSrtings.noRouteFound),
+        ),
+      ),
+    );
   }
 }
