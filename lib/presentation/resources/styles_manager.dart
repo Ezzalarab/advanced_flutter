@@ -1,5 +1,5 @@
-import 'package:advanced_flutter/presentation/colors_manager.dart';
-import 'package:advanced_flutter/presentation/fonts_manager.dart';
+import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
+import 'package:advanced_flutter/presentation/resources/fonts_manager.dart';
 import 'package:flutter/cupertino.dart';
 
 TextStyle _getTextStyle({
