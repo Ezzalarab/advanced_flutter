@@ -15,16 +15,16 @@ ThemeData getAppTheme() {
 
     // Text Theme
     textTheme: TextTheme(
-      headline1: getBoldStyle(
+      headlineLarge: getBoldStyle(
         fontColor: ColorManager.darkGrey,
         fontSize: FontSize.s18,
       ),
-      subtitle1: getMediuStyle(
+      titleMedium: getMediuStyle(
         fontColor: ColorManager.grey,
         fontSize: FontSize.s14,
       ),
-      caption: getRegularStyle(fontColor: ColorManager.lightGrey),
-      bodyText1: getRegularStyle(fontColor: ColorManager.grey),
+      bodyLarge: getRegularStyle(fontColor: ColorManager.lightGrey),
+      bodySmall: getRegularStyle(fontColor: ColorManager.grey),
       displayLarge: getLightStyle(
         fontColor: ColorManager.white,
         fontSize: FontSize.s22,

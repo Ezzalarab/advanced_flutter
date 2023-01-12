@@ -1,7 +1,9 @@
+import 'dart:async';
+import 'package:advanced_flutter/presentation/resources/assets_manager.dart';
 import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
+import 'package:advanced_flutter/presentation/resources/constants_manager.dart';
+import 'package:advanced_flutter/presentation/resources/routes_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -11,11 +13,42 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  Timer? _timer;
+  _startDelay() {
+    _timer = Timer(
+      const Duration(seconds: Constants.splashDelay),
+      _goNext,
+    );
+  }
+
+  _goNext() {
+    Navigator.pushReplacementNamed(context, Routes.onBoardingRoute);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startDelay();
+  }
+
+  @override
+  void dispose() {
+    _timer!.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: ColorManager.primary,
-      body: Image(image: AssetImage("assets/images/")),
+      body: Center(
+        child: Image(
+          width: 200,
+          height: 200,
+          fit: BoxFit.contain,
+          image: AssetImage(ImagesAssets.pytonLogo),
+        ),
+      ),
     );
   }
 }
