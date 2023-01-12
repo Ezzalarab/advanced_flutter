@@ -62,7 +62,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/python_logo.png
-  #   - images/a_dot_ham.jpeg
+    - assets/images/artificial-brain-computer-svgrepo-com.svg
+    - assets/images/artificial-intelligence-svgrepo-com.svg
+    - assets/images/bar-chart-sorted-business-analytics-statistics-svgrepo-com.svg
+    - assets/images/donut-chart-piece-business-analytics-statistics-svgrepo-com.svg
+    - assets/images/icons8-python.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
