@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:advanced_flutter/presentation/resources/assets_manager.dart';
+import 'package:advanced_flutter/presentation/resources/constants_manager.dart';
 import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:advanced_flutter/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,16 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               width: AppSize.s20,
               child: Icon(Icons.arrow_back),
             ),
+            onTap: () {
+              // Go to previous slide
+              _pageController.animateToPage(
+                _getPreviousIndex(),
+                duration: const Duration(
+                  microseconds: Constants.sliderAnimation,
+                ),
+                curve: Curves.bounceInOut,
+              );
+            },
           ),
         ),
         Row(
@@ -112,6 +123,22 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         ),
       ],
     );
+  }
+
+  int _getPreviousIndex() {
+    int previousIndex = _currentPageIndex--;
+    if (previousIndex == -1) {
+      previousIndex = _list.length - 1;
+    }
+    return previousIndex;
+  }
+
+  int _getNextIndex() {
+    int previousIndex = _currentPageIndex++;
+    if (previousIndex == _list.length) {
+      previousIndex = 0;
+    }
+    return previousIndex;
   }
 
   Widget _getProperCircle(int index) {
