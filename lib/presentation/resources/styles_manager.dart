@@ -47,7 +47,7 @@ TextStyle getRegularStyle({
 
 // Medium Style
 
-TextStyle getMediuStyle({
+TextStyle getMediumStyle({
   double fontSize = FontSize.s12,
   FontWeight fontWeight = FontWeightManager.medium,
   Color fontColor = ColorManager.darkGrey,

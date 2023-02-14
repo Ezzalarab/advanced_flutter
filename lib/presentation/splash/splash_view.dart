@@ -46,7 +46,7 @@ class _SplashViewState extends State<SplashView> {
           width: 200,
           height: 200,
           fit: BoxFit.contain,
-          image: AssetImage(ImagesAssets.pytonLogo),
+          image: AssetImage(ImagesAssets.pythonLogo),
         ),
       ),
     );

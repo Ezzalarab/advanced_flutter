@@ -1,7 +1,7 @@
 const String imagePath = "assets/images";
 
 class ImagesAssets {
-  static const String pytonLogo = "$imagePath/python_logo.png";
+  static const String pythonLogo = "$imagePath/python_logo.png";
   static const String artificialBrain =
       "$imagePath/artificial-brain-computer-svgrepo-com.svg";
   static const String artificialIntelligence =

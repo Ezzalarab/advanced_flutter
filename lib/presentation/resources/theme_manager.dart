@@ -19,16 +19,20 @@ ThemeData getAppTheme() {
         fontColor: ColorManager.darkGrey,
         fontSize: FontSize.s18,
       ),
-      titleMedium: getMediuStyle(
+      headlineMedium: getRegularStyle(
+        fontColor: ColorManager.darkGrey,
+        fontSize: FontSize.s16,
+      ),
+      displayLarge: getLightStyle(
+        fontColor: ColorManager.darkGrey,
+        fontSize: FontSize.s16,
+      ),
+      titleMedium: getMediumStyle(
         fontColor: ColorManager.grey,
         fontSize: FontSize.s14,
       ),
       bodyLarge: getRegularStyle(fontColor: ColorManager.lightGrey),
       bodySmall: getRegularStyle(fontColor: ColorManager.grey),
-      displayLarge: getLightStyle(
-        fontColor: ColorManager.white,
-        fontSize: FontSize.s22,
-      ),
     ),
 
     // Card View Theme
@@ -79,7 +83,7 @@ ThemeData getAppTheme() {
         fontSize: FontSize.s14,
         fontColor: ColorManager.lightGrey,
       ),
-      labelStyle: getMediuStyle(
+      labelStyle: getMediumStyle(
         fontColor: ColorManager.grey,
         fontSize: FontSize.s14,
       ),
