@@ -4,6 +4,7 @@ import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
 import 'package:advanced_flutter/presentation/resources/constants_manager.dart';
 import 'package:advanced_flutter/presentation/resources/routes_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -39,14 +40,14 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: ColorManager.primary,
+    return Scaffold(
+      backgroundColor: ColorManager.white,
       body: Center(
-        child: Image(
-          width: 200,
+        child: SvgPicture.asset(
+          ImagesAssets.python,
           height: 200,
-          fit: BoxFit.contain,
-          image: AssetImage(ImagesAssets.pythonLogo),
+          width: 200,
+          color: ColorManager.primary,
         ),
       ),
     );

@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:advanced_flutter/presentation/resources/assets_manager.dart';
-import 'package:advanced_flutter/presentation/resources/constants_manager.dart';
-import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
-import 'package:advanced_flutter/presentation/resources/values_manager.dart';
 import 'package:flutter/material.dart';
-
 import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../presentation/resources/assets_manager.dart';
+import '../../presentation/resources/constants_manager.dart';
+import '../../presentation/resources/strings_manager.dart';
+import '../../presentation/resources/values_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -25,23 +25,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         SliderObject(
           title: AppStrings.onBoardingTitle1,
           subTitle: AppStrings.onBoardingSubTitle1,
-          image: ImagesAssets.python,
+          image: ImagesAssets.artificialBrain,
         ),
         SliderObject(
           title: AppStrings.onBoardingTitle2,
           subTitle: AppStrings.onBoardingSubTitle2,
-          image: ImagesAssets.artificialBrain,
+          image: ImagesAssets.python,
         ),
-        // SliderObject(
-        //   title: AppStrings.onBoardingTitle3,
-        //   subTitle: AppStrings.onBoardingSubTitle3,
-        //   image: ImagesAssets.artificialIntelligence,
-        // ),
-        // SliderObject(
-        //   title: AppStrings.onBoardingTitle4,
-        //   subTitle: AppStrings.onBoardingSubTitle4,
-        //   image: ImagesAssets.chartStatistics,
-        // ),
       ];
 
   @override
@@ -53,7 +43,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           statusBarBrightness: Brightness.dark,
         ),
       ),
-      backgroundColor: ColorManager.lightGrey,
+      backgroundColor: ColorManager.white,
       body: PageView.builder(
         controller: _pageController,
         itemCount: _list.length,
@@ -64,20 +54,22 @@ class _OnBoardingViewState extends State<OnBoardingView> {
       ),
       bottomSheet: Container(
         color: ColorManager.white,
-        height: AppSize.s100,
         padding: const EdgeInsets.all(AppPadding.p10),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: const Text(
+                child: Text(
                   AppStrings.skip,
+                  style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.end,
                 ),
               ),
             ),
+            _getBottomSheetWidget(),
           ],
         ),
       ),
@@ -85,43 +77,46 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   Widget _getBottomSheetWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p14),
-          child: GestureDetector(
-            child: const SizedBox(
-              height: AppSize.s20,
-              width: AppSize.s20,
-              child: Icon(Icons.arrow_back),
-            ),
-            onTap: () {
-              // Go to previous slide
-              _pageController.animateToPage(
-                _getPreviousIndex(),
-                duration: const Duration(
-                  microseconds: Constants.sliderAnimation,
-                ),
-                curve: Curves.bounceInOut,
-              );
-            },
-          ),
-        ),
-        Row(
-          children: [],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p14),
-          child: GestureDetector(
-            child: const SizedBox(
-              height: AppSize.s20,
-              width: AppSize.s20,
-              child: Icon(Icons.arrow_forward),
+    return Container(
+      color: ColorManager.primary,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppPadding.p14),
+            child: GestureDetector(
+              child: const SizedBox(
+                height: AppSize.s20,
+                width: AppSize.s20,
+                child: Icon(Icons.arrow_back),
+              ),
+              onTap: () {
+                // Go to previous slide
+                _pageController.animateToPage(
+                  _getPreviousIndex(),
+                  duration: const Duration(
+                    microseconds: Constants.sliderAnimation,
+                  ),
+                  curve: Curves.bounceInOut,
+                );
+              },
             ),
           ),
-        ),
-      ],
+          Row(
+            children: [],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(AppPadding.p14),
+            child: GestureDetector(
+              child: const SizedBox(
+                height: AppSize.s20,
+                width: AppSize.s20,
+                child: Icon(Icons.arrow_forward),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
