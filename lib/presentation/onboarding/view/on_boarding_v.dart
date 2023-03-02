@@ -1,22 +1,23 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:advanced_flutter/domain/entities/slider_object.dart';
 import 'package:flutter/material.dart';
 import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../presentation/resources/assets_manager.dart';
-import '../../presentation/resources/constants_manager.dart';
-import '../../presentation/resources/strings_manager.dart';
-import '../../presentation/resources/values_manager.dart';
+import '../../resources/assets_manager.dart';
+import '../../resources/constants_manager.dart';
+import '../../resources/strings_manager.dart';
+import '../../resources/values_manager.dart';
 
-class OnBoardingView extends StatefulWidget {
-  const OnBoardingView({super.key});
+class OnBoardingV extends StatefulWidget {
+  const OnBoardingV({super.key});
 
   @override
-  State<OnBoardingView> createState() => _OnBoardingViewState();
+  State<OnBoardingV> createState() => _OnBoardingVState();
 }
 
-class _OnBoardingViewState extends State<OnBoardingView> {
+class _OnBoardingVState extends State<OnBoardingV> {
   late final List<SliderObject> _list = _getSliderData();
   final PageController _pageController = PageController();
   int _currentPageIndex = 0;
@@ -54,7 +55,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
       ),
       bottomSheet: Container(
         color: ColorManager.white,
-        padding: const EdgeInsets.all(AppPadding.p10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -88,7 +88,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: const SizedBox(
                 height: AppSize.s20,
                 width: AppSize.s20,
-                child: Icon(Icons.arrow_back),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: ColorManager.white,
+                ),
               ),
               onTap: () {
                 // Go to previous slide
@@ -103,7 +106,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             ),
           ),
           Row(
-            children: [],
+            children: [
+              for (int i = 0; i < _list.length; i++) _getProperCircle(i)
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(AppPadding.p14),
@@ -111,7 +116,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               child: const SizedBox(
                 height: AppSize.s20,
                 width: AppSize.s20,
-                child: Icon(Icons.arrow_forward),
+                child: Icon(
+                  Icons.arrow_forward,
+                  color: ColorManager.white,
+                ),
               ),
             ),
           ),
@@ -121,7 +129,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   int _getPreviousIndex() {
-    int previousIndex = _currentPageIndex--;
+    int previousIndex = --_currentPageIndex;
     if (previousIndex == -1) {
       previousIndex = _list.length - 1;
     }
@@ -129,40 +137,21 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   int _getNextIndex() {
-    int previousIndex = _currentPageIndex++;
+    int previousIndex = ++_currentPageIndex;
     if (previousIndex == _list.length) {
       previousIndex = 0;
     }
     return previousIndex;
   }
 
-  Widget _getProperCircle(int index) {
-    if (index == _currentPageIndex) {
-      return Container(
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(width: 2, color: Colors.white)),
-        child: const Icon(
-          Icons.circle,
+  Widget _getProperCircle(int index) => Padding(
+        padding: const EdgeInsets.all(AppPadding.p10),
+        child: Icon(
+          (index == _currentPageIndex) ? Icons.circle : Icons.circle_outlined,
+          size: AppSize.s16,
           color: Colors.white,
         ),
       );
-    } else {
-      return Container(
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
-            border: Border.all(width: 2, color: Colors.white)),
-        child: const Icon(
-          Icons.circle_outlined,
-          color: Colors.white,
-        ),
-      );
-    }
-  }
 }
 
 class OnBoardingPage extends StatelessWidget {
@@ -200,15 +189,4 @@ class OnBoardingPage extends StatelessWidget {
       ],
     );
   }
-}
-
-class SliderObject {
-  String title;
-  String subTitle;
-  String image;
-  SliderObject({
-    required this.title,
-    required this.subTitle,
-    required this.image,
-  });
 }
