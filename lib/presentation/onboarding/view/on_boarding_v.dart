@@ -1,16 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:advanced_flutter/domain/entities/slider_object.dart';
-import 'package:advanced_flutter/domain/entities/slider_view_object.dart';
-import 'package:advanced_flutter/presentation/onboarding/view_model/on_boarding_vm.dart';
-import 'package:flutter/material.dart';
-import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
-import '../../resources/assets_manager.dart';
+import '../../../domain/entities/slider_object.dart';
+import '../../../domain/entities/slider_view_object.dart';
+import '../../resources/colors_manager.dart';
 import '../../resources/constants_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../../resources/values_manager.dart';
+import '../view_model/on_boarding_vm.dart';
 
 class OnBoardingV extends StatefulWidget {
   const OnBoardingV({super.key});
