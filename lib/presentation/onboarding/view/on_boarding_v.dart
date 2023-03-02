@@ -112,7 +112,7 @@ class _OnBoardingVState extends State<OnBoardingV> {
                 _pageController.animateToPage(
                   _onBoardingVM.goPrevious(),
                   duration: const Duration(
-                    microseconds: Constants.sliderAnimation,
+                    microseconds: ViewConstants.sliderAnimation,
                   ),
                   curve: Curves.bounceInOut,
                 );
@@ -141,7 +141,7 @@ class _OnBoardingVState extends State<OnBoardingV> {
                 _pageController.animateToPage(
                   _onBoardingVM.goNext(),
                   duration: const Duration(
-                    microseconds: Constants.sliderAnimation,
+                    microseconds: ViewConstants.sliderAnimation,
                   ),
                   curve: Curves.bounceInOut,
                 );

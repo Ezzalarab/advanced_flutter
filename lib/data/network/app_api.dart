@@ -1,11 +1,11 @@
 import 'package:advanced_flutter/data/responses/responses.dart';
 
-import '../urls.dart';
+import '../constants.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 part 'app_api.g.dart';
 
-@RestApi(baseUrl: Urls.baseUrl)
+@RestApi(baseUrl: DataConstants.baseUrl)
 abstract class AppServiceClient {
   factory AppServiceClient(
     Dio dio, {
