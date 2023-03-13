@@ -9,7 +9,7 @@ import '../../resources/colors_manager.dart';
 import '../../resources/constants_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../../resources/values_manager.dart';
-import '../view_model/on_boarding_vm.dart';
+import '../vm/on_boarding_vm.dart';
 
 class OnBoardingV extends StatefulWidget {
   const OnBoardingV({super.key});
@@ -20,7 +20,7 @@ class OnBoardingV extends StatefulWidget {
 
 class _OnBoardingVState extends State<OnBoardingV> {
   final PageController _pageController = PageController();
-  OnBoardingVM _onBoardingVM = OnBoardingVM();
+  final OnBoardingVM _onBoardingVM = OnBoardingVM();
 
   @override
   void initState() {
