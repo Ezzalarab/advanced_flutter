@@ -1,10 +1,12 @@
 import 'package:advanced_flutter/data/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class DioFactory {
   Future<Dio> getDio() async {
     Dio dio = Dio();
-    Map<String, String> _headers = {
+    Map<String, String> headers = {
       DataConstants.contentType: DataConstants.applicationJson,
       DataConstants.accept: DataConstants.applicationJson,
       DataConstants.authorization: "SEND TOKEN HERE", // TODO send token here
@@ -13,10 +15,19 @@ class DioFactory {
 
     dio.options = BaseOptions(
       baseUrl: DataConstants.baseUrl,
-      headers: _headers,
+      headers: headers,
       sendTimeout: DataConstants.timeOut,
       receiveTimeout: DataConstants.timeOut,
     );
+
+    if (kDebugMode) {
+      dio.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseHeader: true,
+      ));
+    }
+
     return dio;
   }
 }
