@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:advanced_flutter/data/failures/error_handler.dart';
 import 'package:advanced_flutter/data/mappers/mapper.dart';
 import 'package:dartz/dartz.dart';
 
@@ -25,14 +26,20 @@ class RepositoryImpl implements Repository {
   Future<Either<Failure, Auth>> login(
       {required LoginRequest loginRequest}) async {
     if (await _networkInfoImpl.isConeected) {
-      final authResponse = await _remoteDSImpl.login(loginRequest);
-      if (authResponse.status == 0) {
-        return Right(authResponse.toDomain());
-      } else {
-        return Left(Failure(code: 2, message: authResponse.message ?? "Error"));
+      try {
+        final authResponse = await _remoteDSImpl.login(loginRequest);
+        if (authResponse.status == ApiInternalStatus.success) {
+          return Right(authResponse.toDomain());
+        } else {
+          return Left(Failure(
+              code: ApiInternalStatus.failure,
+              message: authResponse.message ?? ResponseMessage.unknown));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
       }
     } else {
-      return Left(Failure(code: 1, message: "Check Your Internet Connection"));
+      return Left(ErrorSource.noInternetConnection.getFailure());
     }
   }
 }

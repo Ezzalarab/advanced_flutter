@@ -6,6 +6,7 @@ class ErrorHandler implements Exception {
 
   ErrorHandler.handle(dynamic error) {
     if (error is DioError) {
+      // error from Dio response
       failure = _handleError(error);
     } else {
       // unknown error / default error
@@ -190,4 +191,9 @@ class ResponseMessage {
   static const String noInternetConnection =
       "Please Check Your Internet Connection";
   static const String unknown = "Some Thing Whent Wrong, Try Again Later";
+}
+
+class ApiInternalStatus {
+  static const int success = 1;
+  static const int failure = 0;
 }
