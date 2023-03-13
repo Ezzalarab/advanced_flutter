@@ -9,9 +9,7 @@ import 'base_uc.dart';
 
 class LoginUC implements BaseUC<LoginUCInput, Auth> {
   final Repository _repository;
-  LoginUC(
-    this._repository,
-  );
+  LoginUC(this._repository);
 
   @override
   Future<Either<Failure, Auth>> execute(LoginUCInput input) async {

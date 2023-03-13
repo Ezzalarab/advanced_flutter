@@ -1,10 +1,19 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
+import 'package:advanced_flutter/domain/usecases/login_uc.dart';
 import 'package:advanced_flutter/presentation/base/base_vm.dart';
+import 'package:advanced_flutter/presentation/common/freezed_data_class.dart';
 
 class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
-  final StreamController _userNameSC = StreamController<String>.broadcast();
+  final StreamController _emailSC = StreamController<String>.broadcast();
   final StreamController _passwordSC = StreamController<String>.broadcast();
+
+  LoginObject loginObject = LoginObject("", "");
+
+  final LoginUC _loginUC;
+
+  LoginVM(this._loginUC);
 
   // Inputs
   //
@@ -15,30 +24,37 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   }
 
   @override
-  setUserName(String username) {
-    inputUserName.add(username);
+  setEmail(String email) {
+    inputEmail.add(email);
+    loginObject.copyWith(email: email);
   }
 
   @override
-  setUserPassword(String password) {
+  setPassword(String password) {
     inputPassword.add(password);
+    loginObject.copyWith(password: password);
   }
 
   @override
-  Sink get inputUserName => _userNameSC.sink;
+  Sink get inputEmail => _emailSC.sink;
 
   @override
   Sink get inputPassword => _passwordSC.sink;
 
   @override
-  login() {
-    // TODO: implement login
-    throw UnimplementedError();
+  login() async {
+    loginObject;
+    final requestResult = await _loginUC.execute(
+        LoginUCInput(email: loginObject.email, password: loginObject.password));
+    requestResult.fold(
+      (failure) => {print(failure.message)},
+      (auth) => {print(auth.customer!.name)},
+    );
   }
 
   @override
   void dispose() {
-    _userNameSC.close();
+    _emailSC.close();
     _passwordSC.close();
   }
 
@@ -46,8 +62,8 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   //
 
   @override
-  Stream<bool> get outIsUserNameValid =>
-      _userNameSC.stream.map((userName) => _isUserNamedValid(userName));
+  Stream<bool> get outEmailValid =>
+      _emailSC.stream.map((userName) => _isUserNamedValid(userName));
 
   @override
   Stream<bool> get outIsPasswordValid =>
@@ -63,14 +79,14 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 }
 
 abstract class LoginVMInputs {
-  setUserName(String username);
-  setUserPassword(String password);
+  setEmail(String email);
+  setPassword(String password);
   login();
-  Sink get inputUserName;
+  Sink get inputEmail;
   Sink get inputPassword;
 }
 
 abstract class LoginVMOutputs {
-  Stream<bool> get outIsUserNameValid;
+  Stream<bool> get outEmailValid;
   Stream<bool> get outIsPasswordValid;
 }
