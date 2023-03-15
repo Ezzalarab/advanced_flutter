@@ -8,6 +8,8 @@ import 'package:advanced_flutter/presentation/common/freezed_data_class.dart';
 class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
   final StreamController _passwordSC = StreamController<String>.broadcast();
+  final StreamController _areInputsValidSC =
+      StreamController<String>.broadcast();
 
   LoginObject loginObject = LoginObject("", "");
 
@@ -15,23 +17,32 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   LoginVM(this._loginUC);
 
-  // Inputs
-  //
-
   @override
   void start() {
     // TODO: implement start
   }
 
   @override
+  void dispose() {
+    _emailSC.close();
+    _passwordSC.close();
+    _areInputsValidSC.close();
+  }
+
+  // Inputs
+  //
+
+  @override
   setEmail(String email) {
     inputEmail.add(email);
+    areInputValid.add(null);
     loginObject.copyWith(email: email);
   }
 
   @override
   setPassword(String password) {
     inputPassword.add(password);
+    areInputValid.add(null);
     loginObject.copyWith(password: password);
   }
 
@@ -40,6 +51,9 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   Sink get inputPassword => _passwordSC.sink;
+
+  @override
+  Sink get areInputValid => _areInputsValidSC.sink;
 
   @override
   login() async {
@@ -53,28 +67,34 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   }
 
   @override
-  void dispose() {
-    _emailSC.close();
-    _passwordSC.close();
-  }
+  Sink get inputAreInputsValid => _areInputsValidSC.sink;
 
   // Outputs
   //
 
   @override
   Stream<bool> get outEmailValid =>
-      _emailSC.stream.map((userName) => _isUserNamedValid(userName));
+      _emailSC.stream.map((userName) => _isEmailValid(userName));
 
   @override
   Stream<bool> get outIsPasswordValid =>
       _passwordSC.stream.map((password) => _isPasswordValid(password));
 
+  @override
+  Stream<bool> get outAreInputsValid =>
+      _areInputsValidSC.stream.map((_) => _areInputsValid());
+
   bool _isPasswordValid(String password) {
     return password.isNotEmpty;
   }
 
-  bool _isUserNamedValid(String userName) {
-    return userName.isNotEmpty;
+  bool _isEmailValid(String email) {
+    return email.isNotEmpty;
+  }
+
+  bool _areInputsValid() {
+    return _isEmailValid(loginObject.email) &&
+        _isPasswordValid(loginObject.password);
   }
 }
 
@@ -84,9 +104,11 @@ abstract class LoginVMInputs {
   login();
   Sink get inputEmail;
   Sink get inputPassword;
+  Sink get inputAreInputsValid;
 }
 
 abstract class LoginVMOutputs {
   Stream<bool> get outEmailValid;
   Stream<bool> get outIsPasswordValid;
+  Stream<bool> get outAreInputsValid;
 }

@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -58,9 +59,49 @@ class _LoginVState extends State<LoginV> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
                   child: StreamBuilder<bool>(
+                    stream: _loginVM.outEmailValid,
                     builder: (context, snapshot) => TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        hintText: AppStrings.email,
+                        labelText: AppStrings.email,
+                        errorText: (snapshot.data ?? true)
+                            ? null
+                            : AppStrings.emailError,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSize.s20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
+                  child: StreamBuilder<bool>(
+                    stream: _loginVM.outIsPasswordValid,
+                    builder: (context, snapshot) => TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        hintText: AppStrings.password,
+                        labelText: AppStrings.password,
+                        errorText: (snapshot.data ?? true)
+                            ? null
+                            : AppStrings.passwordError,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSize.s40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
+                  child: StreamBuilder<bool>(
+                    stream: _loginVM.outAreInputsValid,
+                    builder: (context, snapshot) => ElevatedButton(
+                      onPressed: snapshot.data ?? false
+                          ? () {
+                              _loginVM.login();
+                            }
+                          : null,
+                      child: const Text(AppStrings.login),
                     ),
                   ),
                 ),
