@@ -8,14 +8,14 @@ import 'package:advanced_flutter/presentation/common/freezed_data_class.dart';
 class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
   final StreamController _passwordSC = StreamController<String>.broadcast();
-  final StreamController _areInputsValidSC =
-      StreamController<String>.broadcast();
+  final StreamController _areInputsValidSC = StreamController<void>.broadcast();
 
   LoginObject loginObject = LoginObject("", "");
 
   // final LoginUC _loginUC;
 
   // LoginVM(this._loginUC);
+
   LoginVM();
 
   @override
@@ -35,16 +35,16 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   setEmail(String email) {
+    loginObject.copyWith(email: email);
     inputEmail.add(email);
     inputAreInputsValid.add(null);
-    loginObject.copyWith(email: email);
   }
 
   @override
   setPassword(String password) {
+    loginObject.copyWith(password: password);
     inputPassword.add(password);
     inputAreInputsValid.add(null);
-    loginObject.copyWith(password: password);
   }
 
   @override
@@ -91,7 +91,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   }
 
   bool _areInputsValid() {
-    return _isEmailValid(loginObject.email) &&
+    return _isEmailValid(loginObject.email) ||
         _isPasswordValid(loginObject.password);
   }
 }
