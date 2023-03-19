@@ -13,9 +13,10 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   LoginObject loginObject = LoginObject("", "");
 
-  final LoginUC _loginUC;
+  // final LoginUC _loginUC;
 
-  LoginVM(this._loginUC);
+  // LoginVM(this._loginUC);
+  LoginVM();
 
   @override
   void start() {
@@ -35,14 +36,14 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   @override
   setEmail(String email) {
     inputEmail.add(email);
-    areInputValid.add(null);
+    inputAreInputsValid.add(null);
     loginObject.copyWith(email: email);
   }
 
   @override
   setPassword(String password) {
     inputPassword.add(password);
-    areInputValid.add(null);
+    inputAreInputsValid.add(null);
     loginObject.copyWith(password: password);
   }
 
@@ -53,21 +54,18 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   Sink get inputPassword => _passwordSC.sink;
 
   @override
-  Sink get areInputValid => _areInputsValidSC.sink;
+  Sink get inputAreInputsValid => _areInputsValidSC.sink;
 
   @override
   login() async {
-    loginObject;
-    final requestResult = await _loginUC.execute(
-        LoginUCInput(email: loginObject.email, password: loginObject.password));
-    requestResult.fold(
-      (failure) => {print(failure.message)},
-      (auth) => {print(auth.customer!.name)},
-    );
+    // loginObject;
+    // final requestResult = await _loginUC.execute(
+    //     LoginUCInput(email: loginObject.email, password: loginObject.password));
+    // requestResult.fold(
+    //   (failure) => {print(failure.message)},
+    //   (auth) => {print(auth.customer!.name)},
+    // );
   }
-
-  @override
-  Sink get inputAreInputsValid => _areInputsValidSC.sink;
 
   // Outputs
   //
@@ -81,7 +79,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
       _passwordSC.stream.map((password) => _isPasswordValid(password));
 
   @override
-  Stream<bool> get outAreInputsValid =>
+  Stream<bool> get outAreAllInputsValid =>
       _areInputsValidSC.stream.map((_) => _areInputsValid());
 
   bool _isPasswordValid(String password) {
@@ -110,5 +108,5 @@ abstract class LoginVMInputs {
 abstract class LoginVMOutputs {
   Stream<bool> get outEmailValid;
   Stream<bool> get outIsPasswordValid;
-  Stream<bool> get outAreInputsValid;
+  Stream<bool> get outAreAllInputsValid;
 }

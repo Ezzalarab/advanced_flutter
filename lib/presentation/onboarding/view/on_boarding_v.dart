@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:advanced_flutter/presentation/login/view/login_v.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import '../../../domain/entities/slider_view_object.dart';
 import '../../resources/colors_manager.dart';
 import '../../resources/constants_manager.dart';
 import '../../resources/strings_manager.dart';
+import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
 import '../vm/on_boarding_vm.dart';
 
@@ -75,7 +77,9 @@ class _OnBoardingVState extends State<OnBoardingV> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                },
                 child: Text(
                   AppStrings.skip,
                   style: Theme.of(context).textTheme.titleMedium,

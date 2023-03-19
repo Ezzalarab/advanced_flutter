@@ -23,8 +23,7 @@ class RepositoryImpl implements Repository {
   );
 
   @override
-  Future<Either<Failure, Auth>> login(
-      {required LoginRequest loginRequest}) async {
+  Future<Either<Failure, Auth>> login(LoginRequest loginRequest) async {
     if (await _networkInfoImpl.isConeected) {
       try {
         final authResponse = await _remoteDSImpl.login(loginRequest);

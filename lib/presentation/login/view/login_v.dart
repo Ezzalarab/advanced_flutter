@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/presentation/resources/routes_manager.dart';
 import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,7 +16,7 @@ class LoginV extends StatefulWidget {
 }
 
 class _LoginVState extends State<LoginV> {
-  final LoginVM _loginVM = LoginVM(_loginUC);
+  final LoginVM _loginVM = LoginVM();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -41,23 +42,27 @@ class _LoginVState extends State<LoginV> {
 
   Widget _getContent() {
     return Scaffold(
+      backgroundColor: ColorManager.white,
       body: Container(
-        padding: const EdgeInsets.all(AppPadding.p100),
-        color: ColorManager.white,
+        padding: const EdgeInsets.all(AppPadding.p10),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               children: [
-                SvgPicture.asset(
-                  ImagesAssets.python,
-                  height: 200,
-                  width: 200,
-                  color: ColorManager.primary,
+                const SizedBox(height: AppSize.s100),
+                Center(
+                  child: SvgPicture.asset(
+                    ImagesAssets.python,
+                    height: 200,
+                    width: 200,
+                    color: ColorManager.primary,
+                  ),
                 ),
                 const SizedBox(height: AppSize.s20),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                   child: StreamBuilder<bool>(
                     stream: _loginVM.outEmailValid,
                     builder: (context, snapshot) => TextFormField(
@@ -75,7 +80,8 @@ class _LoginVState extends State<LoginV> {
                 ),
                 const SizedBox(height: AppSize.s20),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                   child: StreamBuilder<bool>(
                     stream: _loginVM.outIsPasswordValid,
                     builder: (context, snapshot) => TextFormField(
@@ -92,19 +98,54 @@ class _LoginVState extends State<LoginV> {
                 ),
                 const SizedBox(height: AppSize.s40),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSize.s20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                   child: StreamBuilder<bool>(
-                    stream: _loginVM.outAreInputsValid,
-                    builder: (context, snapshot) => ElevatedButton(
-                      onPressed: snapshot.data ?? false
-                          ? () {
-                              _loginVM.login();
-                            }
-                          : null,
-                      child: const Text(AppStrings.login),
+                    stream: _loginVM.outAreAllInputsValid,
+                    builder: (context, snapshot) => SizedBox(
+                      width: double.infinity,
+                      height: AppSize.s40,
+                      child: ElevatedButton(
+                        onPressed: snapshot.data ?? false
+                            ? () {
+                                _loginVM.login();
+                              }
+                            : null,
+                        child: const Text(AppStrings.login),
+                      ),
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, Routes.forgotPasswordRoute);
+                        },
+                        child: Text(
+                          AppStrings.forgitPassword,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, Routes.registerRoute);
+                        },
+                        child: Text(
+                          AppStrings.notRegistered,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
