@@ -13,10 +13,10 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   LoginObject loginObject = LoginObject("", "");
 
-  // final LoginUC _loginUC;
+  final LoginUC _loginUC;
 
-  // LoginVM(this._loginUC);
-  LoginVM();
+  LoginVM(this._loginUC);
+  // LoginVM();
 
   @override
   void start() {

@@ -1,3 +1,3 @@
-abstract class LocalDs {}
+abstract class LocalDS {}
 
-class LocalDSImpl implements LocalDs {}
+class LocalDSImpl implements LocalDS {}

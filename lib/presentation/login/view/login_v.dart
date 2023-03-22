@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/app/di.dart';
 import 'package:advanced_flutter/presentation/resources/routes_manager.dart';
 import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class LoginV extends StatefulWidget {
 }
 
 class _LoginVState extends State<LoginV> {
-  final LoginVM _loginVM = LoginVM();
+  final LoginVM _loginVM = gi<LoginVM>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
