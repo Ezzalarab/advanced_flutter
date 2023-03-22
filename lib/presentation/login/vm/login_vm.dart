@@ -34,14 +34,14 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   setEmail(String email) {
-    loginObject.copyWith(email: email);
+    loginObject = loginObject.copyWith(email: email);
     inputEmail.add(email);
     inputAreInputsValid.add(null);
   }
 
   @override
   setPassword(String password) {
-    loginObject.copyWith(password: password);
+    loginObject = loginObject.copyWith(password: password);
     inputPassword.add(password);
     inputAreInputsValid.add(null);
   }
@@ -57,13 +57,13 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   login() async {
-    // loginObject;
-    // final requestResult = await _loginUC.execute(
-    //     LoginUCInput(email: loginObject.email, password: loginObject.password));
-    // requestResult.fold(
-    //   (failure) => {print(failure.message)},
-    //   (auth) => {print(auth.customer!.name)},
-    // );
+    loginObject;
+    final requestResult = await _loginUC.execute(
+        LoginUCInput(email: loginObject.email, password: loginObject.password));
+    requestResult.fold(
+      (failure) => {print(failure.message)},
+      (auth) => {print(auth.customer!.name)},
+    );
   }
 
   // Outputs
@@ -90,7 +90,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   }
 
   bool _areInputsValid() {
-    return _isEmailValid(loginObject.email) ||
+    return _isEmailValid(loginObject.email) &&
         _isPasswordValid(loginObject.password);
   }
 }

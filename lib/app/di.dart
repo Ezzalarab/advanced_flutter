@@ -46,7 +46,8 @@ Future<void> initAppModule() async {
   gi.registerLazySingleton<LocalDS>(() => LocalDSImpl());
 
   // Repository
-  gi.registerLazySingleton<Repository>(() => RepositoryImpl(gi(), gi(), gi()));
+  gi.registerLazySingleton<Repository>(() =>
+      RepositoryImpl(NetworkInfoImpl(gi()), RemoteDSImpl(gi()), LocalDSImpl()));
 }
 
 Future<void> initLoginModule() async {
