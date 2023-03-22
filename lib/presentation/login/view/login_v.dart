@@ -4,6 +4,8 @@ import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../resources/routes_manager.dart';
+import '../../resources/strings_manager.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/colors_manager.dart';
 import '../../resources/values_manager.dart';
@@ -66,17 +68,20 @@ class _LoginVState extends State<LoginV> {
                       const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                   child: StreamBuilder<bool>(
                     stream: _loginVM.outEmailValid,
-                    builder: (context, snapshot) => TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        hintText: AppStrings.email,
-                        labelText: AppStrings.email,
-                        errorText: (snapshot.data ?? true)
-                            ? null
-                            : AppStrings.emailError,
-                      ),
-                    ),
+                    builder: (context, snapshot) {
+                      // print(snapshot.data);
+                      return TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          hintText: AppStrings.email,
+                          labelText: AppStrings.email,
+                          errorText: (snapshot.data ?? true)
+                              ? null
+                              : AppStrings.emailError,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: AppSize.s20),
@@ -85,16 +90,19 @@ class _LoginVState extends State<LoginV> {
                       const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                   child: StreamBuilder<bool>(
                     stream: _loginVM.outIsPasswordValid,
-                    builder: (context, snapshot) => TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        hintText: AppStrings.password,
-                        labelText: AppStrings.password,
-                        errorText: (snapshot.data ?? true)
-                            ? null
-                            : AppStrings.passwordError,
-                      ),
-                    ),
+                    builder: (context, snapshot) {
+                      // print(snapshot.data);
+                      return TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          hintText: AppStrings.password,
+                          labelText: AppStrings.password,
+                          errorText: (snapshot.data ?? true)
+                              ? null
+                              : AppStrings.passwordError,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: AppSize.s40),
@@ -103,18 +111,21 @@ class _LoginVState extends State<LoginV> {
                       const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                   child: StreamBuilder<bool>(
                     stream: _loginVM.outAreAllInputsValid,
-                    builder: (context, snapshot) => SizedBox(
-                      width: double.infinity,
-                      height: AppSize.s40,
-                      child: ElevatedButton(
-                        onPressed: snapshot.data ?? false
-                            ? () {
-                                _loginVM.login();
-                              }
-                            : null,
-                        child: const Text(AppStrings.login),
-                      ),
-                    ),
+                    builder: (context, snapshot) {
+                      print(snapshot.data);
+                      return SizedBox(
+                        width: double.infinity,
+                        height: AppSize.s40,
+                        child: ElevatedButton(
+                          onPressed: snapshot.data ?? false
+                              ? () {
+                                  _loginVM.login();
+                                }
+                              : null,
+                          child: const Text(AppStrings.login),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Padding(
