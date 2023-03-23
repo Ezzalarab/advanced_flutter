@@ -42,35 +42,98 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getStateWidget(BuildContext context) {
     switch (stateRendererTyp) {
-      // case StateRendererType.popupLoadingState:
-      //   // TODO: Handle this case.
-      //   break;
-      // case StateRendererType.popupErrorState:
-      //   // TODO: Handle this case.
-      //   break;
+      case StateRendererType.popupLoadingState:
+        return _getPopupDialog(
+          context: context,
+          children: [
+            _getAnimatedImage(),
+          ],
+        );
+      case StateRendererType.popupErrorState:
+        return _getPopupDialog(
+          context: context,
+          children: [
+            _getAnimatedImage(),
+            _getMessage(message),
+            _getRetryButton(
+              title: AppStrings.ok,
+              context: context,
+            ),
+          ],
+        );
       case StateRendererType.fullScreenLoadingState:
         return _getItemsColumn(children: [
-          _getAnimatedJson(),
-          _getMessage("message"),
+          _getAnimatedImage(),
+          _getMessage(message),
         ]);
       case StateRendererType.fullScreenErrorState:
-        return _getItemsColumn(children: [
-          _getAnimatedJson(),
-          _getMessage("message"),
-          _getRetryButton(
-            title: AppStrings.retryAgain,
-            context: context,
-          ),
-        ]);
-      // case StateRendererType.fullScreenEmptyState:
-      //   // TODO: Handle this case.
-      //   break;
-      // case StateRendererType.contentState:
-      //   // TODO: Handle this case.
-      //   break;
+        return _getItemsColumn(
+          children: [
+            _getAnimatedImage(),
+            _getMessage(message),
+            _getRetryButton(
+              title: AppStrings.retryAgain,
+              context: context,
+            ),
+          ],
+        );
+      case StateRendererType.fullScreenEmptyState:
+        return _getItemsColumn(
+          children: [
+            _getAnimatedImage(),
+            _getMessage(message),
+          ],
+        );
+      case StateRendererType.contentState:
+        return Container(); // TODO show content
       default:
-        return _getItemsColumn(children: []);
+        return _getItemsColumn(
+          children: [
+            _getMessage("no state"),
+          ],
+        );
     }
+  }
+
+  Widget _getPopupDialog({
+    required BuildContext context,
+    required List<Widget> children,
+  }) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.r14),
+      ),
+      elevation: AppSize.s1_5,
+      backgroundColor: ColorManager.transparent,
+      child: Container(
+        decoration: BoxDecoration(
+          color: ColorManager.white,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(AppRadius.r14),
+          boxShadow: const [
+            BoxShadow(
+              color: ColorManager.black26,
+            ),
+          ],
+        ),
+        child: _getDialogContent(
+          context: context,
+          childern: [],
+        ),
+      ),
+    );
+  }
+
+  Widget _getDialogContent({
+    required BuildContext context,
+    required List<Widget> childern,
+  }) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: childern,
+    );
   }
 
   Widget _getItemsColumn({required List<Widget> children}) {
@@ -81,7 +144,7 @@ class StateRenderer extends StatelessWidget {
     );
   }
 
-  Widget _getAnimatedJson() {
+  Widget _getAnimatedImage() {
     return SizedBox(
       height: AppSize.s100,
       width: AppSize.s100,
