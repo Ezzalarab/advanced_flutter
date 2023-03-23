@@ -18,4 +18,7 @@ class AppStrings {
   static const login = "Login";
   static const forgitPassword = "Forgit password";
   static const notRegistered = "Not a member? Sign up";
+  static const loading = "Loading";
+  static const retryAgain = "Retry Again";
+  static const ok = "OK";
 }
