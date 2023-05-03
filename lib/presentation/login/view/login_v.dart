@@ -1,9 +1,11 @@
-import 'package:advanced_flutter/app/di.dart';
-import 'package:advanced_flutter/presentation/resources/routes_manager.dart';
-import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../app/di.dart';
+import '../../../data/constants.dart';
+import '../../common/state_renderer/state_renderer_empl.dart';
+import '../../resources/routes_manager.dart';
+import '../../resources/strings_manager.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/colors_manager.dart';
 import '../../resources/values_manager.dart';
@@ -38,126 +40,135 @@ class _LoginVState extends State<LoginV> {
 
   @override
   Widget build(BuildContext context) {
-    return _getContent();
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      body: StreamBuilder<FlowState>(
+        stream: _loginVM.outputState,
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return _getContent();
+          }
+          return snapshot.data!.getScreenWidget(
+            context: context,
+            contentScreenWidget: _getContent(),
+            retryActionFunction: _loginVM.login(),
+          );
+        },
+      ),
+    );
   }
 
   Widget _getContent() {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      body: Container(
-        padding: const EdgeInsets.all(AppPadding.p10),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: AppSize.s100),
-                Center(
-                  child: SvgPicture.asset(
-                    ImagesAssets.python,
-                    height: 200,
-                    width: 200,
-                    color: ColorManager.primary,
-                  ),
+    return Container(
+      padding: const EdgeInsets.all(AppPadding.p10),
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const SizedBox(height: AppSize.s100),
+              Center(
+                child: SvgPicture.asset(
+                  ImagesAssets.python,
+                  height: 200,
+                  width: 200,
+                  color: ColorManager.primary,
                 ),
-                const SizedBox(height: AppSize.s20),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                  child: StreamBuilder<bool>(
-                    stream: _loginVM.outEmailValid,
-                    builder: (context, snapshot) {
-                      // print(snapshot.data);
-                      return TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          hintText: AppStrings.email,
-                          labelText: AppStrings.email,
-                          errorText: (snapshot.data ?? true)
-                              ? null
-                              : AppStrings.emailError,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: AppSize.s20),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                  child: StreamBuilder<bool>(
-                    stream: _loginVM.outIsPasswordValid,
-                    builder: (context, snapshot) {
-                      // print(snapshot.data);
-                      return TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          hintText: AppStrings.password,
-                          labelText: AppStrings.password,
-                          errorText: (snapshot.data ?? true)
-                              ? null
-                              : AppStrings.passwordError,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: AppSize.s40),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-                  child: StreamBuilder<bool>(
-                    stream: _loginVM.outAreAllInputsValid,
-                    builder: (context, snapshot) {
-                      print(snapshot.data);
-                      return SizedBox(
-                        width: double.infinity,
-                        height: AppSize.s40,
-                        child: ElevatedButton(
-                          onPressed: snapshot.data ?? false
-                              ? () {
-                                  _loginVM.login();
-                                }
-                              : null,
-                          child: const Text(AppStrings.login),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, Routes.forgotPasswordRoute);
-                        },
-                        child: Text(
-                          AppStrings.forgitPassword,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.end,
-                        ),
+              ),
+              const SizedBox(height: AppSize.s20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+                child: StreamBuilder<bool>(
+                  stream: _loginVM.outEmailValid,
+                  builder: (context, snapshot) {
+                    // print(snapshot.data);
+                    return TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        hintText: AppStrings.email,
+                        labelText: AppStrings.email,
+                        errorText: (snapshot.data ?? true)
+                            ? null
+                            : AppStrings.emailError,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, Routes.registerRoute);
-                        },
-                        child: Text(
-                          AppStrings.notRegistered,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.end,
-                        ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: AppSize.s20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+                child: StreamBuilder<bool>(
+                  stream: _loginVM.outIsPasswordValid,
+                  builder: (context, snapshot) {
+                    // print(snapshot.data);
+                    return TextFormField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        hintText: AppStrings.password,
+                        labelText: AppStrings.password,
+                        errorText: (snapshot.data ?? true)
+                            ? null
+                            : AppStrings.passwordError,
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: AppSize.s40),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
+                child: StreamBuilder<bool>(
+                  stream: _loginVM.outAreAllInputsValid,
+                  builder: (context, snapshot) {
+                    print(snapshot.data);
+                    return SizedBox(
+                      width: double.infinity,
+                      height: AppSize.s40,
+                      child: ElevatedButton(
+                        onPressed: snapshot.data ?? false
+                            ? () {
+                                _loginVM.login();
+                              }
+                            : null,
+                        child: const Text(AppStrings.login),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.forgotPasswordRoute);
+                      },
+                      child: Text(
+                        AppStrings.forgitPassword,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.registerRoute);
+                      },
+                      child: Text(
+                        AppStrings.notRegistered,
+                        style: Theme.of(context).textTheme.titleMedium,
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

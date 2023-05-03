@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:advanced_flutter/domain/usecases/login_uc.dart';
 import 'package:advanced_flutter/presentation/base/base_vm.dart';
 import 'package:advanced_flutter/presentation/common/freezed_data_class.dart';
+import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer.dart';
+import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer_empl.dart';
 
 class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
@@ -15,15 +17,16 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final LoginUC _loginUC;
 
   LoginVM(this._loginUC);
-  // LoginVM();
 
   @override
   void start() {
-    // TODO: implement start
+    // view model shold tell view content
+    inputState.add(ContentState());
   }
 
   @override
   void dispose() {
+    super.dispose();
     _emailSC.close();
     _passwordSC.close();
     _areInputsValidSC.close();
@@ -57,12 +60,27 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   login() async {
-    loginObject;
-    final requestResult = await _loginUC.execute(
-        LoginUCInput(email: loginObject.email, password: loginObject.password));
+    inputState.add(LoadingState(
+        stateRendererType: StateRendererType.popupLoadingState,
+        message: "Logging in ..."));
+    final requestResult = await _loginUC.execute(LoginUCInput(
+      email: loginObject.email,
+      password: loginObject.password,
+    ));
     requestResult.fold(
-      (failure) => {print(failure.message)},
-      (auth) => {print(auth.customer!.name)},
+      (failure) => {
+        inputState.add(
+          ErrorState(
+            stateRendererType: StateRendererType.popupErrorState,
+            message: failure.message,
+          ),
+        ),
+      },
+      (auth) => {
+        // Content
+        inputState.add(ContentState()),
+        // Navigate to main screen
+      },
     );
   }
 
