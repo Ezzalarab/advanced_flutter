@@ -119,7 +119,7 @@ class StateRenderer extends StatelessWidget {
         ),
         child: _getDialogContent(
           context: context,
-          childern: [],
+          childern: children,
         ),
       ),
     );
@@ -147,8 +147,8 @@ class StateRenderer extends StatelessWidget {
 
   Widget _getAnimatedImage(String animationName) {
     return SizedBox(
-      height: AppSize.s100,
-      width: AppSize.s100,
+      height: AppSize.s150,
+      width: AppSize.s150,
       child: Lottie.asset(animationName),
     );
   }

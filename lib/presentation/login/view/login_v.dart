@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../app/di.dart';
-import '../../../data/constants.dart';
 import '../../common/state_renderer/state_renderer_empl.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/strings_manager.dart';
@@ -45,14 +45,12 @@ class _LoginVState extends State<LoginV> {
       body: StreamBuilder<FlowState>(
         stream: _loginVM.outputState,
         builder: (context, snapshot) {
-          if (snapshot.data == null) {
-            return _getContent();
-          }
-          return snapshot.data!.getScreenWidget(
-            context: context,
-            contentScreenWidget: _getContent(),
-            retryActionFunction: _loginVM.login(),
-          );
+          return snapshot.data?.getScreenWidget(
+                context: context,
+                contentScreenWidget: _getContent(),
+                retryActionFunction: () => _loginVM.login(),
+              ) ??
+              _getContent();
         },
       ),
     );
@@ -81,7 +79,6 @@ class _LoginVState extends State<LoginV> {
                 child: StreamBuilder<bool>(
                   stream: _loginVM.outEmailValid,
                   builder: (context, snapshot) {
-                    // print(snapshot.data);
                     return TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
@@ -102,7 +99,6 @@ class _LoginVState extends State<LoginV> {
                 child: StreamBuilder<bool>(
                   stream: _loginVM.outIsPasswordValid,
                   builder: (context, snapshot) {
-                    // print(snapshot.data);
                     return TextFormField(
                       controller: _passwordController,
                       decoration: InputDecoration(
@@ -122,7 +118,6 @@ class _LoginVState extends State<LoginV> {
                 child: StreamBuilder<bool>(
                   stream: _loginVM.outAreAllInputsValid,
                   builder: (context, snapshot) {
-                    print(snapshot.data);
                     return SizedBox(
                       width: double.infinity,
                       height: AppSize.s40,

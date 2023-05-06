@@ -1,11 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:advanced_flutter/domain/usecases/login_uc.dart';
-import 'package:advanced_flutter/presentation/base/base_vm.dart';
-import 'package:advanced_flutter/presentation/common/freezed_data_class.dart';
-import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer.dart';
-import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer_empl.dart';
+import '../../../domain/usecases/login_uc.dart';
+import '../../base/base_vm.dart';
+import '../../common/freezed_data_class.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_empl.dart';
 
 class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
@@ -37,15 +37,15 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   setEmail(String email) {
-    loginObject = loginObject.copyWith(email: email);
     inputEmail.add(email);
+    loginObject = loginObject.copyWith(email: email);
     inputAreInputsValid.add(null);
   }
 
   @override
   setPassword(String password) {
-    loginObject = loginObject.copyWith(password: password);
     inputPassword.add(password);
+    loginObject = loginObject.copyWith(password: password);
     inputAreInputsValid.add(null);
   }
 
@@ -60,13 +60,18 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   login() async {
-    inputState.add(LoadingState(
+    inputState.add(
+      LoadingState(
         stateRendererType: StateRendererType.popupLoadingState,
-        message: "Logging in ..."));
-    final requestResult = await _loginUC.execute(LoginUCInput(
-      email: loginObject.email,
-      password: loginObject.password,
-    ));
+        message: "Logging in ...",
+      ),
+    );
+    final requestResult = await _loginUC.execute(
+      LoginUCInput(
+        email: loginObject.email,
+        password: loginObject.password,
+      ),
+    );
     requestResult.fold(
       (failure) => {
         inputState.add(
