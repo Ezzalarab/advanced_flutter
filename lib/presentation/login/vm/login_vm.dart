@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import '../../../domain/usecases/login_uc.dart';
@@ -11,6 +10,8 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
   final StreamController _passwordSC = StreamController<String>.broadcast();
   final StreamController _areInputsValidSC = StreamController<void>.broadcast();
+  final StreamController isUserLoggedInSuccessfullySC =
+      StreamController<bool>();
 
   LoginObject loginObject = LoginObject("", "");
 
@@ -30,6 +31,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
     _emailSC.close();
     _passwordSC.close();
     _areInputsValidSC.close();
+    isUserLoggedInSuccessfullySC.close();
   }
 
   // Inputs
@@ -73,18 +75,19 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
       ),
     );
     requestResult.fold(
-      (failure) => {
+      (failure) {
         inputState.add(
           ErrorState(
             stateRendererType: StateRendererType.popupErrorState,
             message: failure.message,
           ),
-        ),
+        );
       },
-      (auth) => {
+      (auth) {
         // Content
-        inputState.add(ContentState()),
+        inputState.add(ContentState());
         // Navigate to main screen
+        isUserLoggedInSuccessfullySC.add(true);
       },
     );
   }

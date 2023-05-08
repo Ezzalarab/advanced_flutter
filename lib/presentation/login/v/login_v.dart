@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
@@ -36,6 +37,13 @@ class _LoginVState extends State<LoginV> {
         .addListener(() => _loginVM.setEmail(_emailController.text));
     _passwordController
         .addListener(() => _loginVM.setPassword(_passwordController.text));
+    _loginVM.isUserLoggedInSuccessfullySC.stream.listen((isLoggedIn) {
+      if (isLoggedIn) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+        });
+      }
+    });
   }
 
   @override
