@@ -1,3 +1,4 @@
+import 'package:advanced_flutter/app/app_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,6 +25,7 @@ class _LoginVState extends State<LoginV> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AppPreferences _appPreferences = gi<AppPreferences>();
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class _LoginVState extends State<LoginV> {
     _loginVM.isUserLoggedInSuccessfullySC.stream.listen((isLoggedIn) {
       if (isLoggedIn) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
+          _appPreferences.setIsLoggedIn();
           Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
         });
       }

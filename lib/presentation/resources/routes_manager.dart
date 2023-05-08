@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../forgot_password/forgot_password_view.dart';
 import '../login/v/login_v.dart';
 import '../main/main_view.dart';
-import '../onboarding/view/on_boarding_v.dart';
+import '../onboarding/v/on_boarding_v.dart';
 import '../register/register_view.dart';
 import '../splash/splash_view.dart';
 import '../store_details/store_details_view.dart';
