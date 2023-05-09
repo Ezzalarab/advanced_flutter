@@ -64,3 +64,13 @@ extension AuthResponseMapper on AuthResponse? {
     }
   }
 }
+
+extension ForgotPasswordResponseMapper on ForgotPasswordResponse {
+  String toDomain() {
+    if (supportMessage == null) {
+      return DataConstants.empty;
+    } else {
+      return supportMessage!;
+    }
+  }
+}

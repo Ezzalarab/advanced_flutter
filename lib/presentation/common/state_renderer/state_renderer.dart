@@ -12,6 +12,7 @@ enum StateRendererType {
   // Popup
   popupLoadingState,
   popupErrorState,
+  popupContent,
 
   // Full Screen
   fullScreenLoadingState,
@@ -62,6 +63,17 @@ class StateRenderer extends StatelessWidget {
             ),
           ],
         );
+      case StateRendererType.popupContent:
+        return _getPopupDialog(
+          context: context,
+          children: [
+            _getMessage(message),
+            _getRetryButton(
+              title: AppStrings.ok,
+              context: context,
+            ),
+          ],
+        );
       case StateRendererType.fullScreenLoadingState:
         return _getItemsColumn(children: [
           _getAnimatedImage(JsonAssets.loading),
@@ -87,6 +99,7 @@ class StateRenderer extends StatelessWidget {
         );
       case StateRendererType.contentState:
         return Container(); // TODO show content
+
       default:
         return _getItemsColumn(
           children: [

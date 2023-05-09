@@ -1,3 +1,5 @@
+import 'package:advanced_flutter/data/constants.dart';
+import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,11 +34,14 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
     _forgotPasswordVM.start();
     _emailController
         .addListener(() => _forgotPasswordVM.setEmail(_emailController.text));
-    _forgotPasswordVM.isPasswordResetLinkSent.stream.listen((resetLinkSent) {
-      if (resetLinkSent) {
-        print("Password Reset Link Sent Success");
-        SchedulerBinding.instance.addPostFrameCallback((_) {});
-      }
+    _forgotPasswordVM.isPasswordResetLinkSent.stream.listen((supportMessage) {
+      print("Password Reset Link Sent Success");
+      StateRenderer(
+        stateRendererType: StateRendererType.popupContent,
+        message: supportMessage,
+        retryActionFunc: DataConstants.doNothing,
+      );
+      SchedulerBinding.instance.addPostFrameCallback((_) {});
     });
   }
 

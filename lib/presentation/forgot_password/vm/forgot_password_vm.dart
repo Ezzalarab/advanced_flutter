@@ -8,7 +8,7 @@ import '../../base/base_vm.dart';
 class ForgotPasswordVM extends BaseVM
     with ForgotPasswordVMInputs, ForgotPasswordVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
-  final StreamController isPasswordResetLinkSent = StreamController<bool>();
+  final StreamController isPasswordResetLinkSent = StreamController<String>();
 
   String _email = "";
 
@@ -59,11 +59,11 @@ class ForgotPasswordVM extends BaseVM
           ),
         );
       },
-      (auth) {
+      (supportMessage) {
         // Content
         inputState.add(ContentState());
         // Navigate to main screen
-        isPasswordResetLinkSent.add(true);
+        isPasswordResetLinkSent.add(supportMessage);
       },
     );
   }
