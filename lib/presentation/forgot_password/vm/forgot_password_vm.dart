@@ -1,0 +1,91 @@
+import 'dart:async';
+
+import '../../../domain/usecases/forgot_password_uc.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_empl.dart';
+import '../../base/base_vm.dart';
+
+class ForgotPasswordVM extends BaseVM
+    with ForgotPasswordVMInputs, ForgotPasswordVMOutputs {
+  final StreamController _emailSC = StreamController<String>.broadcast();
+  final StreamController isPasswordResetLinkSent = StreamController<bool>();
+
+  String _email = "";
+
+  final ForgotPasswordUC _forgotPasswordUC;
+
+  ForgotPasswordVM(this._forgotPasswordUC);
+
+  @override
+  void start() {
+    // view model shold tell view content
+    inputState.add(ContentState());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailSC.close();
+    isPasswordResetLinkSent.close();
+  }
+
+  // Inputs
+  //
+
+  @override
+  setEmail(String email) {
+    inputEmail.add(email);
+    email = _email;
+  }
+
+  @override
+  Sink get inputEmail => _emailSC.sink;
+
+  @override
+  forgotPassword() async {
+    inputState.add(
+      LoadingState(
+        stateRendererType: StateRendererType.popupLoadingState,
+        message: "Logging in ...",
+      ),
+    );
+    final requestResult = await _forgotPasswordUC.execute(_email);
+    requestResult.fold(
+      (failure) {
+        inputState.add(
+          ErrorState(
+            stateRendererType: StateRendererType.popupErrorState,
+            message: failure.message,
+          ),
+        );
+      },
+      (auth) {
+        // Content
+        inputState.add(ContentState());
+        // Navigate to main screen
+        isPasswordResetLinkSent.add(true);
+      },
+    );
+  }
+
+  // Outputs
+  //
+
+  @override
+  Stream<bool> get outEmailValid =>
+      _emailSC.stream.map((userName) => _isEmailValid(userName));
+
+  bool _isEmailValid(String email) {
+    return _email.isNotEmpty;
+  }
+}
+
+abstract class ForgotPasswordVMInputs {
+  setEmail(String email);
+  forgotPassword();
+  Sink get inputEmail;
+}
+
+abstract class ForgotPasswordVMOutputs {
+  Stream<bool> get outEmailValid;
+}
