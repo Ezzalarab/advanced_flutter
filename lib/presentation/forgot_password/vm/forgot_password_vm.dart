@@ -35,7 +35,7 @@ class ForgotPasswordVM extends BaseVM
   @override
   setEmail(String email) {
     inputEmail.add(email);
-    email = _email;
+    _email = email;
   }
 
   @override
@@ -46,7 +46,7 @@ class ForgotPasswordVM extends BaseVM
     inputState.add(
       LoadingState(
         stateRendererType: StateRendererType.popupLoadingState,
-        message: "Logging in ...",
+        message: "Sending Reset ...",
       ),
     );
     final requestResult = await _forgotPasswordUC.execute(_email);
@@ -73,7 +73,7 @@ class ForgotPasswordVM extends BaseVM
 
   @override
   Stream<bool> get outEmailValid =>
-      _emailSC.stream.map((userName) => _isEmailValid(userName));
+      _emailSC.stream.map((email) => _isEmailValid(email));
 
   bool _isEmailValid(String email) {
     return _email.isNotEmpty;

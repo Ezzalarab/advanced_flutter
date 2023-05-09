@@ -1,11 +1,9 @@
-import 'package:advanced_flutter/app/app_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../app/di.dart';
 import '../../common/state_renderer/state_renderer_empl.dart';
-import '../../resources/routes_manager.dart';
 import '../../resources/strings_manager.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/colors_manager.dart';
@@ -23,7 +21,6 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
   final ForgotPasswordVM _forgotPasswordVM = gi<ForgotPasswordVM>();
   final TextEditingController _emailController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AppPreferences _appPreferences = gi<AppPreferences>();
 
   @override
   void initState() {
@@ -35,12 +32,10 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
     _forgotPasswordVM.start();
     _emailController
         .addListener(() => _forgotPasswordVM.setEmail(_emailController.text));
-    _forgotPasswordVM.isPasswordResetLinkSent.stream.listen((isLoggedIn) {
-      if (isLoggedIn) {
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          _appPreferences.setIsLoggedIn();
-          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-        });
+    _forgotPasswordVM.isPasswordResetLinkSent.stream.listen((resetLinkSent) {
+      if (resetLinkSent) {
+        print("Password Reset Link Sent Success");
+        SchedulerBinding.instance.addPostFrameCallback((_) {});
       }
     });
   }
@@ -80,7 +75,7 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
                   color: ColorManager.primary,
                 ),
               ),
-              const SizedBox(height: AppSize.s20),
+              const SizedBox(height: AppSize.s60),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                 child: StreamBuilder<bool>(
@@ -100,8 +95,7 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
                   },
                 ),
               ),
-              const SizedBox(height: AppSize.s20),
-              const SizedBox(height: AppSize.s40),
+              const SizedBox(height: AppSize.s60),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
                 child: StreamBuilder<bool>(
@@ -116,42 +110,12 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
                                 _forgotPasswordVM.forgotPassword();
                               }
                             : null,
-                        child: const Text(AppStrings.login),
+                        child: const Text(AppStrings.submit),
                       ),
                     );
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                            context, Routes.forgotPasswordRoute);
-                      },
-                      child: Text(
-                        AppStrings.forgitPassword,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(
-                            context, Routes.registerRoute);
-                      },
-                      child: Text(
-                        AppStrings.notRegistered,
-                        style: Theme.of(context).textTheme.titleMedium,
-                        textAlign: TextAlign.end,
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ),

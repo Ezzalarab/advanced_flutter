@@ -1,3 +1,5 @@
+import 'package:advanced_flutter/domain/usecases/forgot_password_uc.dart';
+import 'package:advanced_flutter/presentation/forgot_password/vm/forgot_password_vm.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -28,7 +30,8 @@ Future<void> initAppModule() async {
 
   // Network Info
   gi.registerLazySingleton<InternetConnectionChecker>(
-      () => InternetConnectionChecker()); // TODO check if there is problem
+      () => InternetConnectionChecker());
+  // TODO check if there is problem
   gi.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(gi<InternetConnectionChecker>()));
 
@@ -55,5 +58,14 @@ Future<void> initLoginModule() async {
   if (!gi.isRegistered<LoginUC>()) {
     gi.registerFactory<LoginUC>(() => LoginUC(gi<Repository>()));
     gi.registerFactory<LoginVM>(() => LoginVM(gi<LoginUC>()));
+  }
+}
+
+Future<void> initForgotPasswordModule() async {
+  if (!gi.isRegistered<ForgotPasswordUC>()) {
+    gi.registerFactory<ForgotPasswordUC>(
+        () => ForgotPasswordUC(gi<Repository>()));
+    gi.registerFactory<ForgotPasswordVM>(
+        () => ForgotPasswordVM(gi<ForgotPasswordUC>()));
   }
 }

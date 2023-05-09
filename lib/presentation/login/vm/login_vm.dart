@@ -97,7 +97,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   Stream<bool> get outEmailValid =>
-      _emailSC.stream.map((userName) => _isEmailValid(userName));
+      _emailSC.stream.map((email) => _isEmailValid(email));
 
   @override
   Stream<bool> get outIsPasswordValid =>
