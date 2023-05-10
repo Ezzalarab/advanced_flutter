@@ -1,33 +1,37 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:advanced_flutter/domain/usecases/login_uc.dart';
-import 'package:advanced_flutter/presentation/base/base_vm.dart';
-import 'package:advanced_flutter/presentation/common/freezed_data_class.dart';
+import '../../../domain/usecases/login_uc.dart';
+import '../../base/base_vm.dart';
+import '../../common/freezed_data_class.dart';
+import '../../common/state_renderer/state_renderer.dart';
+import '../../common/state_renderer/state_renderer_empl.dart';
 
 class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   final StreamController _emailSC = StreamController<String>.broadcast();
   final StreamController _passwordSC = StreamController<String>.broadcast();
   final StreamController _areInputsValidSC = StreamController<void>.broadcast();
+  final StreamController isUserLoggedInSuccessfullySC =
+      StreamController<bool>();
 
   LoginObject loginObject = LoginObject("", "");
 
-  // final LoginUC _loginUC;
+  final LoginUC _loginUC;
 
-  // LoginVM(this._loginUC);
-
-  LoginVM();
+  LoginVM(this._loginUC);
 
   @override
   void start() {
-    // TODO: implement start
+    // view model shold tell view content
+    inputState.add(ContentState());
   }
 
   @override
   void dispose() {
+    super.dispose();
     _emailSC.close();
     _passwordSC.close();
     _areInputsValidSC.close();
+    isUserLoggedInSuccessfullySC.close();
   }
 
   // Inputs
@@ -35,15 +39,15 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   setEmail(String email) {
-    loginObject.copyWith(email: email);
     inputEmail.add(email);
+    loginObject = loginObject.copyWith(email: email);
     inputAreInputsValid.add(null);
   }
 
   @override
   setPassword(String password) {
-    loginObject.copyWith(password: password);
     inputPassword.add(password);
+    loginObject = loginObject.copyWith(password: password);
     inputAreInputsValid.add(null);
   }
 
@@ -58,13 +62,34 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   login() async {
-    // loginObject;
-    // final requestResult = await _loginUC.execute(
-    //     LoginUCInput(email: loginObject.email, password: loginObject.password));
-    // requestResult.fold(
-    //   (failure) => {print(failure.message)},
-    //   (auth) => {print(auth.customer!.name)},
-    // );
+    inputState.add(
+      LoadingState(
+        stateRendererType: StateRendererType.popupLoadingState,
+        message: "Logging in ...",
+      ),
+    );
+    final requestResult = await _loginUC.execute(
+      LoginUCInput(
+        email: loginObject.email,
+        password: loginObject.password,
+      ),
+    );
+    requestResult.fold(
+      (failure) {
+        inputState.add(
+          ErrorState(
+            stateRendererType: StateRendererType.popupErrorState,
+            message: failure.message,
+          ),
+        );
+      },
+      (auth) {
+        // Content
+        inputState.add(ContentState());
+        // Navigate to main screen
+        isUserLoggedInSuccessfullySC.add(true);
+      },
+    );
   }
 
   // Outputs
@@ -72,7 +97,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
 
   @override
   Stream<bool> get outEmailValid =>
-      _emailSC.stream.map((userName) => _isEmailValid(userName));
+      _emailSC.stream.map((email) => _isEmailValid(email));
 
   @override
   Stream<bool> get outIsPasswordValid =>
@@ -91,7 +116,7 @@ class LoginVM extends BaseVM with LoginVMInputs, LoginVMOutputs {
   }
 
   bool _areInputsValid() {
-    return _isEmailValid(loginObject.email) ||
+    return _isEmailValid(loginObject.email) &&
         _isPasswordValid(loginObject.password);
   }
 }

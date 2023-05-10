@@ -1,8 +1,7 @@
-import 'package:advanced_flutter/domain/entities/customer.dart';
-
 class DataConstants {
   static const String empty = "";
   static const int zero = 0;
+  static Function doNothing = () {};
 
   // Urls:
   static const String baseUrl = "https://advanced-flutter.mocklab.io/";
