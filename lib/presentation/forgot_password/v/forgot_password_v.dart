@@ -36,11 +36,6 @@ class _ForgotPasswordVState extends State<ForgotPasswordV> {
         .addListener(() => _forgotPasswordVM.setEmail(_emailController.text));
     _forgotPasswordVM.isPasswordResetLinkSent.stream.listen((supportMessage) {
       print("Password Reset Link Sent Success");
-      StateRenderer(
-        stateRendererType: StateRendererType.popupContent,
-        message: supportMessage,
-        retryActionFunc: DataConstants.doNothing,
-      );
       SchedulerBinding.instance.addPostFrameCallback((_) {});
     });
   }

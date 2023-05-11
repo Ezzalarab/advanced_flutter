@@ -60,10 +60,14 @@ class ForgotPasswordVM extends BaseVM
         );
       },
       (supportMessage) {
-        // Content
-        inputState.add(ContentState());
-        // Navigate to main screen
         isPasswordResetLinkSent.add(supportMessage);
+        // Content
+        print("supportMessage");
+        print(supportMessage);
+        inputState.add(MessageState(
+          stateRendererType: StateRendererType.popupContent,
+          message: supportMessage,
+        ));
       },
     );
   }

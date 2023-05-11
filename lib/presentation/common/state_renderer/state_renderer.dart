@@ -67,6 +67,7 @@ class StateRenderer extends StatelessWidget {
         return _getPopupDialog(
           context: context,
           children: [
+            _getAnimatedImage(JsonAssets.empty),
             _getMessage(message),
             _getRetryButton(
               title: AppStrings.ok,
@@ -94,6 +95,7 @@ class StateRenderer extends StatelessWidget {
         return _getItemsColumn(
           children: [
             _getAnimatedImage(JsonAssets.empty),
+            // TODO search for success lottie
             _getMessage(message),
           ],
         );
@@ -169,10 +171,14 @@ class StateRenderer extends StatelessWidget {
   Widget _getMessage(String message) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(AppPadding.p8),
+        padding: const EdgeInsets.all(AppPadding.p10),
         child: Text(
           message,
-          style: getRegularStyle(fontColor: ColorManager.black),
+          textAlign: TextAlign.center,
+          style: getRegularStyle(
+            fontColor: ColorManager.black,
+            fontSize: 14,
+          ).copyWith(height: 2),
         ),
       ),
     );

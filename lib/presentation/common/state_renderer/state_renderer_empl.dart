@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import '../../../data/constants.dart';
@@ -52,7 +53,22 @@ class ContentState extends FlowState {
   StateRendererType getStateRendererType() => StateRendererType.contentState;
 }
 
-// Error state
+// Content state
+class MessageState extends FlowState {
+  StateRendererType stateRendererType;
+  String message;
+  MessageState({
+    required this.stateRendererType,
+    required this.message,
+  });
+  @override
+  String getMessage() => message;
+
+  @override
+  StateRendererType getStateRendererType() => StateRendererType.popupContent;
+}
+
+// Empty state
 class EmptyState extends FlowState {
   String message;
 
@@ -127,6 +143,24 @@ extension FlowStateExtension on FlowState {
         {
           dismissDialog(context);
           return contentScreenWidget;
+        }
+      case MessageState:
+        {
+          if (getStateRendererType() == StateRendererType.popupContent) {
+            dismissDialog(context);
+            showPopup(
+              context: context,
+              stateRendererType: getStateRendererType(),
+              message: getMessage(),
+            );
+            return contentScreenWidget;
+          } else {
+            return StateRenderer(
+              stateRendererType: getStateRendererType(),
+              message: getMessage(),
+              retryActionFunc: retryActionFunction,
+            );
+          }
         }
       default:
         {
