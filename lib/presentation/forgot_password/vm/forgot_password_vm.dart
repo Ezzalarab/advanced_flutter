@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import '../../../domain/usecases/forgot_password_uc.dart';
+import '../../base/base_vm.dart';
 import '../../common/state_renderer/state_renderer.dart';
 import '../../common/state_renderer/state_renderer_empl.dart';
-import '../../base/base_vm.dart';
 
 class ForgotPasswordVM extends BaseVM
     with ForgotPasswordVMInputs, ForgotPasswordVMOutputs {

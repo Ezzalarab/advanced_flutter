@@ -1,4 +1,4 @@
-import 'package:advanced_flutter/data/failures/failure.dart';
+import '../../data/failures/failure.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class BaseUC<In, Out> {

@@ -1,6 +1,7 @@
-import 'package:advanced_flutter/presentation/resources/colors_manager.dart';
-import 'package:advanced_flutter/presentation/resources/fonts_manager.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'colors_manager.dart';
+import 'fonts_manager.dart';
 
 TextStyle _getTextStyle({
   required double fontSize,

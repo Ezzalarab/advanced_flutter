@@ -1,6 +1,6 @@
-import 'package:advanced_flutter/app/di.dart';
 import 'package:flutter/material.dart';
 
+import '../../app/di.dart';
 import '../forgot_password/v/forgot_password_v.dart';
 import '../login/v/login_v.dart';
 import '../main/main_view.dart';

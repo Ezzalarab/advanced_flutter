@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 
 import '../../domain/entities/auth.dart';
 import '../../domain/repositories/repository.dart';
-import '../failures/error_handler.dart';
-import '../mappers/mapper.dart';
 import '../data_sources/local_ds.dart';
 import '../data_sources/remote_ds.dart';
-import '../network/network_info.dart';
+import '../failures/error_handler.dart';
 import '../failures/failure.dart';
+import '../mappers/mapper.dart';
+import '../network/network_info.dart';
 import '../requestes/login_request.dart';
 
 class RepositoryImpl implements Repository {
