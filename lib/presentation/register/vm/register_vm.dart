@@ -49,6 +49,26 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   //
 
   @override
+  setUserName(String userName) {
+    inputUserName.add(userName);
+    registerObject = registerObject.copyWith(userName: userName);
+    inputAreInputsValid.add(null);
+  }
+
+  @override
+  setCountryCode(String countryCode) {
+    registerObject = registerObject.copyWith(countryMobileCode: countryCode);
+    inputAreInputsValid.add(null);
+  }
+
+  @override
+  setMobileNumber(String mobileNumber) {
+    inputMobilNumber.add(mobileNumber);
+    registerObject = registerObject.copyWith(mobileNumber: mobileNumber);
+    inputAreInputsValid.add(null);
+  }
+
+  @override
   setEmail(String email) {
     inputEmail.add(email);
     registerObject = registerObject.copyWith(email: email);
@@ -63,7 +83,15 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   }
 
   @override
+  setProfilePicture(File picture) {
+    inputProfilePicture.add(picture);
+    registerObject = registerObject.copyWith(profilePicture: picture.path);
+    inputAreInputsValid.add(null);
+  }
+
+  @override
   Sink get inputUserName => _userNameSC.sink;
+
   @override
   Sink get inputMobilNumber => _mobilNumberSC.sink;
 
@@ -80,7 +108,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   Sink get inputProfilePicture => _profilePictureSC.sink;
 
   @override
-  login() async {
+  register() async {
     inputState.add(
       LoadingState(
         stateRendererType: StateRendererType.popupLoadingState,
@@ -166,9 +194,13 @@ bool _isPasswordValid(String password) {
 }
 
 abstract class RegisterVMInputs {
+  setUserName(String userName);
+  setCountryCode(String countryCode);
+  setMobileNumber(String mobileNumber);
   setEmail(String email);
   setPassword(String password);
-  login();
+  setProfilePicture(File picture);
+  register();
   Sink get inputEmail;
   Sink get inputPassword;
   Sink get inputUserName;
