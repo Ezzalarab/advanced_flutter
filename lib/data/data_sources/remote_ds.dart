@@ -5,6 +5,7 @@ import '../responses/responses.dart';
 abstract class RemoteDS {
   Future<AuthResponse> login(LoginRequest loginRequest);
   Future<ForgotPasswordResponse> forgotPassword(String email);
+  Future<AuthResponse> register(RegisterRequest loginRequest);
 }
 
 class RemoteDSImpl implements RemoteDS {
@@ -20,5 +21,17 @@ class RemoteDSImpl implements RemoteDS {
   @override
   Future<ForgotPasswordResponse> forgotPassword(String email) async {
     return await _appServiceClient.fotgotPassword(email);
+  }
+
+  @override
+  Future<AuthResponse> register(RegisterRequest registerRequest) async {
+    return await _appServiceClient.register(
+      registerRequest.userName,
+      registerRequest.countryMobileCode,
+      registerRequest.mobileNumber,
+      registerRequest.email,
+      registerRequest.password,
+      registerRequest.profilePicture,
+    );
   }
 }

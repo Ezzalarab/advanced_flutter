@@ -50,6 +50,8 @@ flutter:
     - assets/json/error-3.json
     - assets/json/empty.json
     - assets/json/empty-box.json
+    - assets/json/success.json
+    - assets/json/done.json
   fonts:
     - family: Montserrat
       fonts:

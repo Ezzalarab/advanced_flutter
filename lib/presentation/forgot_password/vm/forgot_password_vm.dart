@@ -65,7 +65,7 @@ class ForgotPasswordVM extends BaseVM
         print("supportMessage");
         print(supportMessage);
         inputState.add(MessageState(
-          stateRendererType: StateRendererType.popupContent,
+          stateRendererType: StateRendererType.popupSuccess,
           message: supportMessage,
         ));
       },

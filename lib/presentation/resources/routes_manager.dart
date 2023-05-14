@@ -5,7 +5,7 @@ import '../forgot_password/v/forgot_password_v.dart';
 import '../login/v/login_v.dart';
 import '../main/main_view.dart';
 import '../onboarding/v/on_boarding_v.dart';
-import '../register/register_view.dart';
+import '../register/v/register_v.dart';
 import '../splash/splash_view.dart';
 import '../store_details/store_details_view.dart';
 import 'strings_manager.dart';
@@ -31,7 +31,7 @@ class RouteGenerator {
         initLoginModule();
         return MaterialPageRoute(builder: (_) => const LoginV());
       case Routes.registerRoute:
-        return MaterialPageRoute(builder: (_) => const RegisterView());
+        return MaterialPageRoute(builder: (_) => const RegisterV());
       case Routes.forgotPasswordRoute:
         initForgotPasswordModule();
         return MaterialPageRoute(builder: (_) => const ForgotPasswordV());

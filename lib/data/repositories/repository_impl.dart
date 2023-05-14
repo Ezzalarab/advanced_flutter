@@ -60,4 +60,24 @@ class RepositoryImpl implements Repository {
       return Left(ErrorSource.noInternetConnection.getFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Auth>> register(RegisterRequest register) async {
+    if (await _networkInfo.isConeected) {
+      try {
+        final authResponse = await _remoteDS.register(register);
+        if (authResponse.status == ApiInternalStatus.success) {
+          return Right(authResponse.toDomain());
+        } else {
+          return Left(Failure(
+              code: ApiInternalStatus.failure,
+              message: authResponse.message ?? ResponseMessage.unknown));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(ErrorSource.noInternetConnection.getFailure());
+    }
+  }
 }

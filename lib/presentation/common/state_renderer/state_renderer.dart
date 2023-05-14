@@ -12,7 +12,7 @@ enum StateRendererType {
   // Popup
   popupLoadingState,
   popupErrorState,
-  popupContent,
+  popupSuccess,
 
   // Full Screen
   fullScreenLoadingState,
@@ -63,11 +63,11 @@ class StateRenderer extends StatelessWidget {
             ),
           ],
         );
-      case StateRendererType.popupContent:
+      case StateRendererType.popupSuccess:
         return _getPopupDialog(
           context: context,
           children: [
-            _getAnimatedImage(JsonAssets.empty),
+            _getAnimatedImage(JsonAssets.success),
             _getMessage(message),
             _getRetryButton(
               title: AppStrings.ok,
@@ -95,7 +95,6 @@ class StateRenderer extends StatelessWidget {
         return _getItemsColumn(
           children: [
             _getAnimatedImage(JsonAssets.empty),
-            // TODO search for success lottie
             _getMessage(message),
           ],
         );
@@ -164,7 +163,10 @@ class StateRenderer extends StatelessWidget {
     return SizedBox(
       height: AppSize.s150,
       width: AppSize.s150,
-      child: Lottie.asset(animationName),
+      child: Lottie.asset(
+        animationName,
+        // repeat: false,
+      ),
     );
   }
 
