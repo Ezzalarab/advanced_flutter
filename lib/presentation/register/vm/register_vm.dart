@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:advanced_flutter/app/functions.dart';
 import 'package:advanced_flutter/domain/usecases/register_uc.dart';
 import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 
@@ -10,7 +11,7 @@ import '../../common/freezed_data_class.dart';
 import '../../common/state_renderer/state_renderer.dart';
 import '../../common/state_renderer/state_renderer_empl.dart';
 
-class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMOutputs {
+class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   final StreamController _userNameSC = StreamController<String>.broadcast();
   final StreamController _mobilNumberSC = StreamController<String>.broadcast();
   final StreamController _emailSC = StreamController<String>.broadcast();
@@ -62,6 +63,11 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMOutputs {
   }
 
   @override
+  Sink get inputUserName => _userNameSC.sink;
+  @override
+  Sink get inputMobilNumber => _mobilNumberSC.sink;
+
+  @override
   Sink get inputEmail => _emailSC.sink;
 
   @override
@@ -69,6 +75,9 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMOutputs {
 
   @override
   Sink get inputAreInputsValid => _areInputsValidSC.sink;
+
+  @override
+  Sink get inputProfilePicture => _profilePictureSC.sink;
 
   @override
   login() async {
@@ -110,49 +119,40 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMOutputs {
   //
 
   @override
-  Stream<bool> get userNameSC =>
-      _userNameSC.stream.map((userName) => _isUserNameValie(userName));
+  Stream<bool> get outIsUserNameValid =>
+      _userNameSC.stream.map((userName) => _isUserNameValid(userName));
 
   @override
-  Stream<String?> get outputUserNameError => outputIsUserNameValid.map((isValid) => isValid? null : AppStrings.userNameShortMessage "User name should be at least 4 chars");
+  Stream<String?> get outUserNameError => outIsUserNameValid
+      .map((isValid) => isValid ? null : AppStrings.userNameShortMessage);
 
   @override
-  Stream<bool> get outputIsUserNameValid => _userNameSC.stream.map((userName) => _isUserNameValid(userName));
-  
+  Stream<bool> get outIsEmailValid =>
+      _emailSC.stream.map((email) => isEmailValid(email));
+
+  @override
+  Stream<String?> get outEmailError => outIsEmailValid
+      .map((isValid) => isValid ? null : AppStrings.emailNotValidMessage);
+
+  @override
+  Stream<bool> get outIsMobilNumberValid =>
+      _mobilNumberSC.stream.map((number) => isMobileValid(number));
+
+  @override
+  Stream<String?> get outMobileNumberError => outIsMobilNumberValid
+      .map((isValid) => isValid ? null : AppStrings.mobileNotValidMessage);
+
   @override
   Stream<bool> get outIsPasswordValid =>
       _passwordSC.stream.map((password) => _isPasswordValid(password));
 
   @override
-  Stream<bool> get mobilNumberSC => throw UnimplementedError();
+  Stream<String?> get outPasswordError => outIsPasswordValid
+      .map((isValid) => isValid ? null : AppStrings.mobileNotValidMessage);
 
   @override
-  Stream<bool> get profilePictureSC => throw UnimplementedError();
-  
-  @override
-  // TODO: implement outputEmailError
-  Stream<String?> get outputEmailError => throw UnimplementedError();
-  
-  @override
-  // TODO: implement outputIsEmailValid
-  Stream<bool> get outputIsEmailValid => throw UnimplementedError();
-  
-  @override
-  // TODO: implement outputIsProfilePictureValid
-  Stream<bool> get outputIsProfilePictureValid => throw UnimplementedError();
-  
-  @override
-  // TODO: implement outputIsUobilNumberValid
-  Stream<bool> get outputIsUobilNumberValid => throw UnimplementedError();
-  
-  @override
-  // TODO: implement outputMobileNumberError
-  Stream<String?> get outputMobileNumberError => throw UnimplementedError();
-  
-  @override
-  // TODO: implement outputPasswordError
-  Stream<String?> get outputPasswordError => throw UnimplementedError();
-  
+  Stream<File> get outIsProfilePictureValid =>
+      _profilePictureSC.stream.map((file) => file);
 }
 
 // Private functions
@@ -162,16 +162,7 @@ bool _isUserNameValid(String userName) {
 }
 
 bool _isPasswordValid(String password) {
-  return password.length > 4;
-}
-
-bool _isEmailValid(String email) {
-  return email.isNotEmpty;
-}
-
-bool _areInputsValid() {
-  return _isEmailValid(registerObject.email) &&
-      _isPasswordValid(registerObject.password);
+  return password.length > 5;
 }
 
 abstract class RegisterVMInputs {
@@ -180,24 +171,24 @@ abstract class RegisterVMInputs {
   login();
   Sink get inputEmail;
   Sink get inputPassword;
-  Sink get userNameSC;
-  Sink get mobilNumberSC;
-  Sink get profilePictureSC;
+  Sink get inputUserName;
+  Sink get inputMobilNumber;
+  Sink get inputProfilePicture;
   Sink get inputAreInputsValid;
 }
 
-abstract class RegisterVMOutputs {
-  Stream<bool> get outputIsUserNameValid;
-  Stream<String?> get outputUserNameError;
+abstract class RegisterVMouts {
+  Stream<bool> get outIsUserNameValid;
+  Stream<String?> get outUserNameError;
 
-  Stream<bool> get outputIsUobilNumberValid;
-  Stream<String?> get outputMobileNumberError;
+  Stream<bool> get outIsMobilNumberValid;
+  Stream<String?> get outMobileNumberError;
 
-  Stream<bool> get outputIsEmailValid;
-  Stream<String?> get outputEmailError;
+  Stream<bool> get outIsEmailValid;
+  Stream<String?> get outEmailError;
 
   Stream<bool> get outIsPasswordValid;
-  Stream<String?> get outputPasswordError;
+  Stream<String?> get outPasswordError;
 
-  Stream<bool> get outputIsProfilePictureValid;
+  Stream<File> get outIsProfilePictureValid;
 }
