@@ -1,14 +1,12 @@
-import 'package:advanced_flutter/data/constants.dart';
-import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../app/di.dart';
 import '../../common/state_renderer/state_renderer_empl.dart';
-import '../../resources/strings_manager.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/colors_manager.dart';
+import '../../resources/strings_manager.dart';
 import '../../resources/values_manager.dart';
 import '../vm/forgot_password_vm.dart';
 

@@ -1,17 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:advanced_flutter/app/app_preferences.dart';
 import 'package:advanced_flutter/app/di.dart';
-import 'package:advanced_flutter/presentation/login/v/login_v.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../domain/entities/slider_object.dart';
 import '../../../domain/entities/slider_view_object.dart';
 import '../../resources/colors_manager.dart';
 import '../../resources/constants_manager.dart';
-import '../../resources/strings_manager.dart';
 import '../../resources/routes_manager.dart';
+import '../../resources/strings_manager.dart';
 import '../../resources/values_manager.dart';
 import '../vm/on_boarding_vm.dart';
 

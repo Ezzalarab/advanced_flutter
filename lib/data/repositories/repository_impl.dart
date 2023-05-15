@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 
 import '../../domain/entities/auth.dart';
 import '../../domain/repositories/repository.dart';
-import '../failures/error_handler.dart';
-import '../mappers/mapper.dart';
 import '../data_sources/local_ds.dart';
 import '../data_sources/remote_ds.dart';
-import '../network/network_info.dart';
+import '../failures/error_handler.dart';
 import '../failures/failure.dart';
+import '../mappers/mapper.dart';
+import '../network/network_info.dart';
 import '../requestes/login_request.dart';
 
 class RepositoryImpl implements Repository {
@@ -52,6 +52,26 @@ class RepositoryImpl implements Repository {
               code: ApiInternalStatus.failure,
               message:
                   resetPasswordResponse.message ?? ResponseMessage.unknown));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(ErrorSource.noInternetConnection.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Auth>> register(RegisterRequest register) async {
+    if (await _networkInfo.isConeected) {
+      try {
+        final authResponse = await _remoteDS.register(register);
+        if (authResponse.status == ApiInternalStatus.success) {
+          return Right(authResponse.toDomain());
+        } else {
+          return Left(Failure(
+              code: ApiInternalStatus.failure,
+              message: authResponse.message ?? ResponseMessage.unknown));
         }
       } catch (error) {
         return Left(ErrorHandler.handle(error).failure);

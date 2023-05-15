@@ -65,7 +65,7 @@ class MessageState extends FlowState {
   String getMessage() => message;
 
   @override
-  StateRendererType getStateRendererType() => StateRendererType.popupContent;
+  StateRendererType getStateRendererType() => StateRendererType.popupSuccess;
 }
 
 // Empty state
@@ -146,7 +146,7 @@ extension FlowStateExtension on FlowState {
         }
       case MessageState:
         {
-          if (getStateRendererType() == StateRendererType.popupContent) {
+          if (getStateRendererType() == StateRendererType.popupSuccess) {
             dismissDialog(context);
             showPopup(
               context: context,

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 
 import '../../data/failures/failure.dart';
-import '../entities/auth.dart';
 import '../../data/requestes/login_request.dart';
+import '../entities/auth.dart';
 
 abstract class Repository {
   Future<Either<Failure, Auth>> login(
@@ -10,5 +10,8 @@ abstract class Repository {
   );
   Future<Either<Failure, String>> forgotPassword(
     String email,
+  );
+  Future<Either<Failure, Auth>> register(
+    RegisterRequest registerRequest,
   );
 }

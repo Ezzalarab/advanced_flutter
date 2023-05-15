@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:advanced_flutter/presentation/common/state_renderer/state_renderer_empl.dart';
+import '../common/state_renderer/state_renderer_empl.dart';
 
 abstract class BaseVMInputs {
   void start();

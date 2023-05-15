@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../resources/values_manager.dart';
+import '../../resources/values_manager.dart';
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+class RegisterV extends StatefulWidget {
+  const RegisterV({super.key});
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  State<RegisterV> createState() => _RegisterVState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _RegisterVState extends State<RegisterV> {
   @override
   Widget build(BuildContext context) {
     return Center(

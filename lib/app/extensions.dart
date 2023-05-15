@@ -1,8 +1,8 @@
-import 'package:advanced_flutter/data/constants.dart';
-import 'package:advanced_flutter/data/responses/responses.dart';
-import 'package:advanced_flutter/domain/entities/contacts.dart';
-import 'package:advanced_flutter/domain/entities/customer.dart';
-import 'package:advanced_flutter/presentation/resources/constants_manager.dart';
+import '../data/constants.dart';
+import '../data/responses/responses.dart';
+import '../domain/entities/contacts.dart';
+import '../domain/entities/customer.dart';
+import '../presentation/resources/constants_manager.dart';
 
 extension NonNullString on String? {
   String orEmpty() {
