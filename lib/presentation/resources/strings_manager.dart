@@ -26,4 +26,8 @@ class AppStrings {
   static const emailNotValidMessage = "Email format is not valid";
   static const mobileNotValidMessage = "Mobile format is not correct";
   static const passwordNotValidMessage = "Password should be at least 6 chars";
+  static const alreadyHaveAccount = "Already have account? Log in";
+  static const register = "Register";
+  static const mobileNumber = "Mobile nsumber";
+  static const userName = "User name";
 }

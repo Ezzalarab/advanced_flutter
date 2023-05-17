@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   analyzer: ^5.7.1
+  country_code_picker: ^3.0.0
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   dio: ^5.0.1
