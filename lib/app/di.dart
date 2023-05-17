@@ -1,3 +1,5 @@
+import 'package:advanced_flutter/domain/usecases/register_uc.dart';
+import 'package:advanced_flutter/presentation/register/vm/register_vm.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -67,5 +69,12 @@ Future<void> initForgotPasswordModule() async {
         () => ForgotPasswordUC(gi<Repository>()));
     gi.registerFactory<ForgotPasswordVM>(
         () => ForgotPasswordVM(gi<ForgotPasswordUC>()));
+  }
+}
+
+Future<void> initRegisterModule() async {
+  if (!gi.isRegistered<RegisterUC>()) {
+    gi.registerFactory<RegisterUC>(() => RegisterUC(gi<Repository>()));
+    gi.registerFactory<RegisterVM>(() => RegisterVM(gi<RegisterUC>()));
   }
 }

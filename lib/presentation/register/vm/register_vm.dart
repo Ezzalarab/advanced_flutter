@@ -29,7 +29,6 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
 
   @override
   void start() {
-    // view model shold tell view content
     inputState.add(ContentState());
   }
 
@@ -52,41 +51,41 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   setUserName(String userName) {
     inputUserName.add(userName);
     registerObject = registerObject.copyWith(userName: userName);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setCountryCode(String countryCode) {
     registerObject = registerObject.copyWith(countryMobileCode: countryCode);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setMobileNumber(String mobileNumber) {
     inputMobilNumber.add(mobileNumber);
     registerObject = registerObject.copyWith(mobileNumber: mobileNumber);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setEmail(String email) {
     inputEmail.add(email);
     registerObject = registerObject.copyWith(email: email);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setPassword(String password) {
     inputPassword.add(password);
     registerObject = registerObject.copyWith(password: password);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setProfilePicture(File picture) {
     inputProfilePicture.add(picture);
     registerObject = registerObject.copyWith(profilePicture: picture.path);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
@@ -102,17 +101,17 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   Sink get inputPassword => _passwordSC.sink;
 
   @override
-  Sink get inputAreInputsValid => _areInputsValidSC.sink;
+  Sink get inputProfilePicture => _profilePictureSC.sink;
 
   @override
-  Sink get inputProfilePicture => _profilePictureSC.sink;
+  Sink get inputAreInputsValid => _areInputsValidSC.sink;
 
   @override
   register() async {
     inputState.add(
       LoadingState(
         stateRendererType: StateRendererType.popupLoadingState,
-        message: "Logging in ...",
+        message: "Registering ...",
       ),
     );
     final requestResult = await _registerUC.execute(
@@ -135,6 +134,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
         );
       },
       (auth) {
+        print("register success");
         // Content
         inputState.add(ContentState());
         // Navigate to main screen
@@ -181,16 +181,33 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   @override
   Stream<File> get outIsProfilePictureValid =>
       _profilePictureSC.stream.map((file) => file);
-}
+
+  @override
+  Stream<bool> get outAreInputsValid =>
+      _areInputsValidSC.stream.map((_) => _areInputsValid());
 
 // Private functions
 
-bool _isUserNameValid(String userName) {
-  return userName.isNotEmpty;
-}
+  bool _isUserNameValid(String userName) {
+    return userName.isNotEmpty;
+  }
 
-bool _isPasswordValid(String password) {
-  return password.length > 5;
+  bool _isPasswordValid(String password) {
+    return password.length > 5;
+  }
+
+  bool _areInputsValid() {
+    return registerObject.countryMobileCode.isNotEmpty &&
+        registerObject.mobileNumber.isNotEmpty &&
+        registerObject.userName.isNotEmpty &&
+        registerObject.email.isNotEmpty &&
+        registerObject.password.isNotEmpty &&
+        registerObject.profilePicture.isNotEmpty;
+  }
+
+  validate() {
+    inputAreInputsValid.add(null);
+  }
 }
 
 abstract class RegisterVMInputs {
@@ -223,4 +240,6 @@ abstract class RegisterVMouts {
   Stream<String?> get outPasswordError;
 
   Stream<File> get outIsProfilePictureValid;
+
+  Stream<bool> get outAreInputsValid;
 }
