@@ -31,7 +31,7 @@ class RemoteDSImpl implements RemoteDS {
       registerRequest.mobileNumber,
       registerRequest.email,
       registerRequest.password,
-      registerRequest.profilePicture,
+      "", //registerRequest.profilePicture,
     );
   }
 }

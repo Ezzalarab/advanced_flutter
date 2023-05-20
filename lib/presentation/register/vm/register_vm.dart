@@ -17,7 +17,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   final StreamController _passwordSC = StreamController<String>.broadcast();
   final StreamController _profilePictureSC = StreamController<File>.broadcast();
   final StreamController _areInputsValidSC = StreamController<void>.broadcast();
-  final StreamController isUserLoggedInSuccessfullySC =
+  final StreamController isUserRegisteredSuccessfullySC =
       StreamController<bool>();
 
   RegisterObject registerObject = RegisterObject("", "", "", "", "", "");
@@ -40,7 +40,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
     _userNameSC.close();
     _mobilNumberSC.close();
     _profilePictureSC.close();
-    isUserLoggedInSuccessfullySC.close();
+    isUserRegisteredSuccessfullySC.close();
   }
 
   // Inputs
@@ -136,8 +136,8 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
         print("register success");
         // Content
         inputState.add(ContentState());
-        // Navigate to main screen
-        isUserLoggedInSuccessfullySC.add(true);
+        isUserRegisteredSuccessfullySC.add(true);
+        // TODO Navigate to main screen
       },
     );
   }
@@ -196,8 +196,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   }
 
   bool _areInputsValid() {
-    return registerObject.countryMobileCode.isNotEmpty &&
-        registerObject.mobileNumber.isNotEmpty &&
+    return registerObject.mobileNumber.isNotEmpty &&
         registerObject.userName.isNotEmpty &&
         registerObject.email.isNotEmpty &&
         registerObject.password.isNotEmpty &&

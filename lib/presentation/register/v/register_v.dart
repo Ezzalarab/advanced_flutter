@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:advanced_flutter/app/app_preferences.dart';
 import 'package:advanced_flutter/app/di.dart';
 import 'package:advanced_flutter/data/constants.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,6 +27,7 @@ class RegisterV extends StatefulWidget {
 class _RegisterVState extends State<RegisterV> {
   final RegisterVM _registerVM = gi<RegisterVM>();
   final _formKey = GlobalKey<FormState>();
+  final AppPreferences _appPreferences = gi<AppPreferences>();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -50,40 +53,16 @@ class _RegisterVState extends State<RegisterV> {
     _mobileNumberController.addListener(() {
       _registerVM.setMobileNumber(_mobileNumberController.text);
     });
+    _registerVM.setCountryCode(DataConstants.yemenCountryCode);
+    _registerVM.isUserRegisteredSuccessfullySC.stream.listen((isLoggedIn) {
+      if (isLoggedIn) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          _appPreferences.setIsLoggedIn();
+          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+        });
+      }
+    });
   }
-
-  // _showImagePicker(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (context) {
-  //       return SafeArea(
-  //         child: Wrap(
-  //           direction: Axis.vertical,
-  //           children: [
-  //             ListTile(
-  //               onTap: () {
-  //                 _pickImageFromCamera();
-  //                 Navigator.of(context).pop();
-  //               },
-  //               leading: const Icon(Icons.camera_alt_outlined),
-  //               title: const Text(AppStrings.camera),
-  //               trailing: const Icon(Icons.arrow_forward_ios_rounded),
-  //             ),
-  //             ListTile(
-  //               onTap: () {
-  //                 _pickImageFromGallery();
-  //                 Navigator.of(context).pop();
-  //               },
-  //               leading: const Icon(Icons.image_outlined),
-  //               title: const Text(AppStrings.photoGallery),
-  //               trailing: const Icon(Icons.arrow_forward_ios_rounded),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 
   _showImagePicker(BuildContext context) {
     showModalBottomSheet(
@@ -93,8 +72,8 @@ class _RegisterVState extends State<RegisterV> {
             child: Wrap(
               children: [
                 ListTile(
-                  trailing: Icon(Icons.arrow_forward),
-                  leading: Icon(Icons.camera),
+                  trailing: const Icon(Icons.arrow_forward),
+                  leading: const Icon(Icons.camera),
                   title: const Text(AppStrings.photoGallery),
                   onTap: () {
                     _pickImageFromGallery();
@@ -102,8 +81,8 @@ class _RegisterVState extends State<RegisterV> {
                   },
                 ),
                 ListTile(
-                  trailing: Icon(Icons.arrow_forward),
-                  leading: Icon(Icons.camera_alt_rounded),
+                  trailing: const Icon(Icons.arrow_forward),
+                  leading: const Icon(Icons.camera_alt_rounded),
                   title: const Text(AppStrings.camera),
                   onTap: () {
                     _pickImageFromCamera();
@@ -215,11 +194,11 @@ class _RegisterVState extends State<RegisterV> {
                         flex: 1,
                         child: CountryCodePicker(
                           onChanged: (country) {
-                            _registerVM.setCountryCode(
-                                country.code ?? DataConstants.yemenCountryCode);
+                            _registerVM.setCountryCode(country.dialCode ??
+                                DataConstants.yemenCountryCode);
                           },
                           initialSelection: '+967',
-                          favorite: const ['+966', 'US'],
+                          favorite: const ['+967', '+966', 'US'],
                           showFlag: true,
                           showOnlyCountryWhenClosed: true,
                           hideMainText: true,
@@ -298,16 +277,16 @@ class _RegisterVState extends State<RegisterV> {
                         _showImagePicker(context);
                       },
                       child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: ColorManager.grey,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: ColorManager.grey,
+                          ),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(AppSize.s8),
+                          ),
                         ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(AppSize.s8),
-                        ),
-                      ),
-                      height: AppSize.s40,
-                      child: _getMediaWidget(),
+                        height: AppSize.s40,
+                        child: _getMediaWidget(),
                       ),
                     );
                   },
@@ -328,7 +307,7 @@ class _RegisterVState extends State<RegisterV> {
                                 _registerVM.register();
                               }
                             : null,
-                        child: const Text(AppStrings.login),
+                        child: const Text(AppStrings.register),
                       ),
                     );
                   },
