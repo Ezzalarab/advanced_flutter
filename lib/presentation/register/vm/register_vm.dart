@@ -5,7 +5,6 @@ import 'package:advanced_flutter/app/functions.dart';
 import 'package:advanced_flutter/domain/usecases/register_uc.dart';
 import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 
-import '../../../domain/usecases/login_uc.dart';
 import '../../base/base_vm.dart';
 import '../../common/freezed_data_class.dart';
 import '../../common/state_renderer/state_renderer.dart';
@@ -179,7 +178,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
       .map((isValid) => isValid ? null : AppStrings.mobileNotValidMessage);
 
   @override
-  Stream<File> get outIsProfilePictureValid =>
+  Stream<File> get outProfilePicture =>
       _profilePictureSC.stream.map((file) => file);
 
   @override
@@ -189,7 +188,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
 // Private functions
 
   bool _isUserNameValid(String userName) {
-    return userName.isNotEmpty;
+    return userName.length > 2;
   }
 
   bool _isPasswordValid(String password) {
@@ -239,7 +238,7 @@ abstract class RegisterVMouts {
   Stream<bool> get outIsPasswordValid;
   Stream<String?> get outPasswordError;
 
-  Stream<File> get outIsProfilePictureValid;
+  Stream<File> get outProfilePicture;
 
   Stream<bool> get outAreInputsValid;
 }
