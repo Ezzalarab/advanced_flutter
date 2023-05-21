@@ -5,5 +5,5 @@ bool isEmailValid(String email) {
 }
 
 bool isMobileValid(String email) {
-  return RegExp(r"^[0-9](9)").hasMatch(email);
+  return RegExp(r"^[0-9]{9}").hasMatch(email);
 }

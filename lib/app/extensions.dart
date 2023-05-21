@@ -2,7 +2,6 @@ import '../data/constants.dart';
 import '../data/responses/responses.dart';
 import '../domain/entities/contacts.dart';
 import '../domain/entities/customer.dart';
-import '../presentation/resources/constants_manager.dart';
 
 extension NonNullString on String? {
   String orEmpty() {

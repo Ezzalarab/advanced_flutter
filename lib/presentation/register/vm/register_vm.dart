@@ -5,7 +5,6 @@ import 'package:advanced_flutter/app/functions.dart';
 import 'package:advanced_flutter/domain/usecases/register_uc.dart';
 import 'package:advanced_flutter/presentation/resources/strings_manager.dart';
 
-import '../../../domain/usecases/login_uc.dart';
 import '../../base/base_vm.dart';
 import '../../common/freezed_data_class.dart';
 import '../../common/state_renderer/state_renderer.dart';
@@ -18,7 +17,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   final StreamController _passwordSC = StreamController<String>.broadcast();
   final StreamController _profilePictureSC = StreamController<File>.broadcast();
   final StreamController _areInputsValidSC = StreamController<void>.broadcast();
-  final StreamController isUserLoggedInSuccessfullySC =
+  final StreamController isUserRegisteredSuccessfullySC =
       StreamController<bool>();
 
   RegisterObject registerObject = RegisterObject("", "", "", "", "", "");
@@ -29,7 +28,6 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
 
   @override
   void start() {
-    // view model shold tell view content
     inputState.add(ContentState());
   }
 
@@ -42,7 +40,7 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
     _userNameSC.close();
     _mobilNumberSC.close();
     _profilePictureSC.close();
-    isUserLoggedInSuccessfullySC.close();
+    isUserRegisteredSuccessfullySC.close();
   }
 
   // Inputs
@@ -52,41 +50,41 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   setUserName(String userName) {
     inputUserName.add(userName);
     registerObject = registerObject.copyWith(userName: userName);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setCountryCode(String countryCode) {
     registerObject = registerObject.copyWith(countryMobileCode: countryCode);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setMobileNumber(String mobileNumber) {
     inputMobilNumber.add(mobileNumber);
     registerObject = registerObject.copyWith(mobileNumber: mobileNumber);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setEmail(String email) {
     inputEmail.add(email);
     registerObject = registerObject.copyWith(email: email);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setPassword(String password) {
     inputPassword.add(password);
     registerObject = registerObject.copyWith(password: password);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
   setProfilePicture(File picture) {
     inputProfilePicture.add(picture);
     registerObject = registerObject.copyWith(profilePicture: picture.path);
-    inputAreInputsValid.add(null);
+    validate();
   }
 
   @override
@@ -102,17 +100,17 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
   Sink get inputPassword => _passwordSC.sink;
 
   @override
-  Sink get inputAreInputsValid => _areInputsValidSC.sink;
+  Sink get inputProfilePicture => _profilePictureSC.sink;
 
   @override
-  Sink get inputProfilePicture => _profilePictureSC.sink;
+  Sink get inputAreInputsValid => _areInputsValidSC.sink;
 
   @override
   register() async {
     inputState.add(
       LoadingState(
         stateRendererType: StateRendererType.popupLoadingState,
-        message: "Logging in ...",
+        message: "Registering ...",
       ),
     );
     final requestResult = await _registerUC.execute(
@@ -135,10 +133,11 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
         );
       },
       (auth) {
+        print("register success");
         // Content
         inputState.add(ContentState());
-        // Navigate to main screen
-        isUserLoggedInSuccessfullySC.add(true);
+        isUserRegisteredSuccessfullySC.add(true);
+        // TODO Navigate to main screen
       },
     );
   }
@@ -179,18 +178,34 @@ class RegisterVM extends BaseVM with RegisterVMInputs, RegisterVMouts {
       .map((isValid) => isValid ? null : AppStrings.mobileNotValidMessage);
 
   @override
-  Stream<File> get outIsProfilePictureValid =>
+  Stream<File> get outProfilePicture =>
       _profilePictureSC.stream.map((file) => file);
-}
+
+  @override
+  Stream<bool> get outAreInputsValid =>
+      _areInputsValidSC.stream.map((_) => _areInputsValid());
 
 // Private functions
 
-bool _isUserNameValid(String userName) {
-  return userName.isNotEmpty;
-}
+  bool _isUserNameValid(String userName) {
+    return userName.length > 2;
+  }
 
-bool _isPasswordValid(String password) {
-  return password.length > 5;
+  bool _isPasswordValid(String password) {
+    return password.length > 5;
+  }
+
+  bool _areInputsValid() {
+    return registerObject.mobileNumber.isNotEmpty &&
+        registerObject.userName.isNotEmpty &&
+        registerObject.email.isNotEmpty &&
+        registerObject.password.isNotEmpty &&
+        registerObject.profilePicture.isNotEmpty;
+  }
+
+  validate() {
+    inputAreInputsValid.add(null);
+  }
 }
 
 abstract class RegisterVMInputs {
@@ -222,5 +237,7 @@ abstract class RegisterVMouts {
   Stream<bool> get outIsPasswordValid;
   Stream<String?> get outPasswordError;
 
-  Stream<File> get outIsProfilePictureValid;
+  Stream<File> get outProfilePicture;
+
+  Stream<bool> get outAreInputsValid;
 }

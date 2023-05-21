@@ -13,4 +13,5 @@ class DataConstants {
   static const String authorization = "authorization";
   static const String defaultLanguage = "language";
   static const Duration timeOut = Duration(minutes: 1); // one minut time out
+  static const String yemenCountryCode = "+967";
 }

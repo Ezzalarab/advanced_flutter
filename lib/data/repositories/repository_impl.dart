@@ -1,8 +1,8 @@
+import 'package:advanced_flutter/data/data_sources/local_ds.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../domain/entities/auth.dart';
 import '../../domain/repositories/repository.dart';
-import '../data_sources/local_ds.dart';
 import '../data_sources/remote_ds.dart';
 import '../failures/error_handler.dart';
 import '../failures/failure.dart';
@@ -13,11 +13,10 @@ import '../requestes/login_request.dart';
 class RepositoryImpl implements Repository {
   final NetworkInfo _networkInfo;
   final RemoteDS _remoteDS;
-  final LocalDS _localDS;
   RepositoryImpl(
     this._networkInfo,
     this._remoteDS,
-    this._localDS,
+    LocalDSImpl localDSImpl,
   );
 
   @override

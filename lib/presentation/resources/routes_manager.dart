@@ -31,6 +31,7 @@ class RouteGenerator {
         initLoginModule();
         return MaterialPageRoute(builder: (_) => const LoginV());
       case Routes.registerRoute:
+        initRegisterModule();
         return MaterialPageRoute(builder: (_) => const RegisterV());
       case Routes.forgotPasswordRoute:
         initForgotPasswordModule();
