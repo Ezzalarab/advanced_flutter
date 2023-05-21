@@ -33,4 +33,8 @@ class AppStrings {
   static const profilePicture = "Profile picture";
   static const photoGallery = "Photo gallery";
   static const camera = "Camera";
+  static const home = "Home";
+  static const search = "Search";
+  static const notifications = "Notifications";
+  static const settings = "Settings";
 }

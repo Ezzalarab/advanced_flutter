@@ -1,3 +1,7 @@
+import 'package:advanced_flutter/presentation/main/pages/home_page.dart';
+import 'package:advanced_flutter/presentation/main/pages/notifications_page.dart';
+import 'package:advanced_flutter/presentation/main/pages/search_v.dart';
+import 'package:advanced_flutter/presentation/main/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/app_preferences.dart';
@@ -11,18 +15,25 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  List<Widget> pages = const [
+    HomePage(),
+    SearchPage(),
+    NotificationsPage(),
+    SettingsPage(),
+  ];
+
+  String _pageTitle = "Home";
+  int _currentPageIndex = 0;
+
   AppPreferences ap = gi<AppPreferences>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            ap.setIsLogOut();
-          },
-          child: const Text("reset login"),
-        ),
+      appBar: AppBar(
+        title: Text(_pageTitle,
+            style: Theme.of(context).textTheme.bodyMedium), // titleSmall
       ),
+      body: pages[_currentPageIndex],
     );
   }
 }
